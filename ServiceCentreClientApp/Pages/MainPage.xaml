@@ -1,0 +1,23 @@
+﻿<Page
+    x:Class="ServiceCentreClientApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ServiceCentreClientApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <NavigationView Name="menu" IsPaneOpen="False" PaneTitle="Меню" PaneDisplayMode="LeftCompact" ItemInvoked="Menu_ItemInvoked" BackRequested="Menu_BackRequested">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Name="DirectorView" Tapped="DirectorView_Tapped" Content="dir" Icon="SyncFolder" Visibility="Collapsed"/>
+                <NavigationViewItem Name="HRView" Tapped="HRView_Tapped" Content="hr" Icon="People" Visibility="Collapsed"/>
+                <NavigationViewItem Name="ManagerView" Tapped="ManagerView_Tapped" Content="mana" Icon="Contact2" Visibility="Collapsed"/>
+                <NavigationViewItem Name="EngineerView" Tapped="EngineerView_Tapped" Content="engi" Icon="Target" Visibility="Collapsed"/>
+                <NavigationViewItem Name="ClientView" Tapped="ClientView_Tapped" Content="clie" Icon="AddFriend" Visibility="Collapsed"/>
+            </NavigationView.MenuItems>
+            <Frame Name="mainFrame"/>
+        </NavigationView>
+    </Grid>
+</Page>
