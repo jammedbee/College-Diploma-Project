@@ -17,7 +17,7 @@
                 <NavigationViewItem Name="EngineerView" Tapped="EngineerView_Tapped" Content="engi" Icon="Target" Visibility="Collapsed"/>
                 <NavigationViewItem Name="ClientView" Tapped="ClientView_Tapped" Content="clie" Icon="AddFriend" Visibility="Collapsed"/>
             </NavigationView.MenuItems>
-            <Frame Name="mainFrame"/>
+            <Frame Name="mainFrame" Navigated="MainFrame_Navigated"/>
         </NavigationView>
     </Grid>
 </Page>

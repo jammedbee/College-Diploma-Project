@@ -5,10 +5,28 @@
     xmlns:local="using:ServiceCentreClientApp.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:ServiceCentreClientApp.Entities"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <ProgressRing x:Name="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="150"/>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="RefreshButton" Click="RefreshButton_Click" Content="Refresh"/>
+                <Button Name="AddButton" Click="AddButton_Click" Content="Add"/>
+            </StackPanel>
+            <GridView Name="RequestsGridView" ItemsSource="{x:Bind requests}" IsEnabled="True" IsItemClickEnabled="True" ItemClick="RequestsGridView_ItemClick">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:Name="RequestTemplate" x:DataType="data:RepairRequest">
+                        <StackPanel>
+                            <TextBlock Text="{x:Bind Id}" FontSize="16"/>
+                            <TextBlock Text="{x:Bind RegistrationDate}"/>
+                            <TextBlock Text="{x:Bind DeviceId}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </StackPanel>
     </Grid>
 </Page>

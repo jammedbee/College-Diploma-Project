@@ -12,6 +12,9 @@
     <Grid>
         <ProgressRing x:Name="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="150"/>
         <StackPanel>
+            <StackPanel>
+                <Button Name="RefreshButton" Content="Refresh" Click="RefreshButton_Click"/>
+            </StackPanel>
             <GridView Name="RequestsGridView" ItemsSource="{x:Bind requests}" IsEnabled="True" IsItemClickEnabled="True" ItemClick="RequestsGridView_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate x:Name="RequestTemplate" x:DataType="data:RepairRequest">

@@ -116,5 +116,10 @@ namespace ServiceCentreClientApp
             mainFrame.GoBack();
             menu.IsBackEnabled = mainFrame.CanGoBack;
         }
+
+        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            menu.IsBackEnabled = mainFrame.CanGoBack;
+        }
     }
 }

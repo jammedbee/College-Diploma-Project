@@ -106,5 +106,10 @@ namespace ServiceCentreClientApp.Pages
             (Parent as Frame).Navigate(typeof(RepairRequestPage), new RepairRequestParameter(
                 e.ClickedItem as RepairRequest, user, connection));
         }
+
+        private async void RefreshButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            await GetRequestsAsync(user);
+        }
     }
 }

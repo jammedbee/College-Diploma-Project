@@ -33,7 +33,7 @@ namespace ServiceCentreClientApp
             this.Suspending += OnSuspending;
         }
 
-        public string ConnectionString { get; set; } = @"Data Source=jmmdbee-laptop;Initial Catalog=ServiceCentre;Integrated Security=True";
+        public string ConnectionString { get; set; } = @"Data Source=jmmdbee-laptop;Initial Catalog=SERVICE_CENTRE;Integrated Security=True";
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.

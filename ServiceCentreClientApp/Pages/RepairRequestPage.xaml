@@ -11,34 +11,78 @@
 
     <Grid>
         <StackPanel>
-            <TextBlock Name="IdTextBlock"/>
-            <StackPanel Orientation="Horizontal">
-                <DatePicker Name="RegistrationDatePicker"/>
-                <TimePicker Name="RegistrationTimePicker"/>
+            <StackPanel>
+                <TextBlock Text="Номер заявки"/>
+                <TextBlock Name="IdTextBlock"/>
+                <TextBlock Text="Дата оформления"/>
+                <TextBlock Name="RegistrationDate" Text="{x:Bind request.RegistrationDate}"/>
+                <TextBlock Text="Дата последнего обновления"/>
+                <TextBlock Name="UpdateDate" Text="{x:Bind request.UpdateDate}"/>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox Name="DeviceComboBox" ItemsSource="{x:Bind devices}" Header="Устройтсво" Width="300">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="entities:Device">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock>
+                                <Run Text="{x:Bind GetDetailedInfo()}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Name="NewDevice" Content="+" Click="NewDevice_Click"/>
+                </StackPanel>
+                <ComboBox Name="ManagerComboBox" ItemsSource="{x:Bind managers}" Header="Ответственный менеджер" Width="300">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="entities:User">
+                            <TextBlock Text="{x:Bind GetFullName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox Name="ClientComboBox" ItemsSource="{x:Bind clients}" Header="Клиент" Width="300">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="entities:User">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock>
+                                <Run Text="{x:Bind GetFullName}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Name="NewClient" Content="+" Click="NewClient_Click"/>
+                </StackPanel>
+                <ComboBox Name="EngineerComboBox" ItemsSource="{x:Bind engineers}" Header="Ответственный инженер" Width="300">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="entities:User">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>
+                                <Run Text="{x:Bind GetFullName}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ComboBox Name="StatusComboBox" ItemsSource="{x:Bind statuses}" Header="Текущий статус" Width="300">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="entities:RequestStatus">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{x:Bind Name}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock Text="Стоимость"/>
+                <TextBox Name="PriceTextBox" Width="300" HorizontalAlignment="Left"/>
             </StackPanel>
-            <TextBlock Name="UpdateDate"/>
-            <ComboBox Name="DeviceComboBox" ItemsSource="{x:Bind devices}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="entities:Device">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock>
-                                <Run Text="{x:Bind SerialNumber}"/>
-                            </TextBlock>
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <ComboBox Name="ManagerComboBox">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="entities:User">
-                        <TextBlock Text="{x:Bind GetFullName}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <ComboBox Name="ClientComboBox"></ComboBox>
-            <ComboBox Name="EngineerComboBox"></ComboBox>
-            <ComboBox Name="StatusComboBox"></ComboBox>
-            <TextBox Name="PriceTextBox"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="AddButton" Content="Add" Click="AddButton_Click"/>
+                <Button Name="SaveButton" Content="Save" Click="SaveButton_Click"/>
+                <Button Name="CancelButton" Content="Cancel" Click="CancelButton_Click"/>
+                <Button Name="EditButton" Content="Edit" Click="EditButton_Click"/>
+            </StackPanel>
+            <ProgressRing Name="Progress" Height="100" Width="100"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using System.Data.SqlClient;
 using ServiceCentreClientApp.Entities;
-using ServiceCentreClientApp.Parameters;
+using ServiceCentreClientApp.Tools;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
 
@@ -25,53 +25,9 @@ namespace ServiceCentreClientApp.Pages
             base.OnNavigatedTo(e);
         }
 
-        //private async void NavigateByUserType(UserParameter userParameter)
-        //{
-        //    try
-        //    {
-
-        //        switch (userParameter.User.TypeId)
-        //        {
-        //            case 1:
-        //                (Parent as Frame).Navigate(typeof(MainPage), userParameter);
-        //                break;
-
-        //            //case 2:
-        //            //    (Parent as Frame).Navigate(typeof(), userParameter);
-        //            //    break;
-
-        //            case 3:
-        //                (Parent as Frame).Navigate(typeof(ManagerPage), userParameter);
-        //                break;
-
-        //            case 4:
-        //                (Parent as Frame).Navigate(typeof(EngineerPage), userParameter);
-        //                break;
-
-        //            case 5:
-        //                (Parent as Frame).Navigate(typeof(HRPage), userParameter);
-        //                break;
-
-        //            case 6:
-        //                (Parent as Frame).Navigate(typeof(DirectorPage), userParameter);
-        //                break;
-
-        //            case 7:
-        //                (Parent as Frame).Navigate(typeof(ClientPage), userParameter);
-        //                break;
-
-        //            default:
-        //                throw new Exception("Произошла ошибка во время определения пользователя. Обратитесь к системному администратору.");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await new MessageDialog($"Произошла следующая ошибка: \"{ex.Message}\"", "Что-то пошло не так :(").ShowAsync();
-        //    }
-        //}
-
         private async void LogInButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            ControlsInteraction.DisableControls(this);
             var user = new User();
             Progress.IsActive = true;
             try
@@ -103,28 +59,31 @@ namespace ServiceCentreClientApp.Pages
                             command.Parameters.Add(new SqlParameter("@firstName", System.Data.SqlDbType.NVarChar, 60)).Direction = System.Data.ParameterDirection.Output;
                             command.Parameters.Add(new SqlParameter("@lastName", System.Data.SqlDbType.NVarChar, 60)).Direction = System.Data.ParameterDirection.Output;
                             command.Parameters.Add(new SqlParameter("@patronymic", System.Data.SqlDbType.NVarChar, 60)).Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(new SqlParameter("@birthDate", System.Data.SqlDbType.DateTime2)).Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(new SqlParameter("@passportNumber", System.Data.SqlDbType.NVarChar, 60)).Direction = System.Data.ParameterDirection.Output;
                             command.Parameters.Add(new SqlParameter("@email", System.Data.SqlDbType.NVarChar, 512)).Direction = System.Data.ParameterDirection.Output;
                             command.Parameters.Add(new SqlParameter("@phoneNumber", System.Data.SqlDbType.NVarChar, 30)).Direction = System.Data.ParameterDirection.Output;
                             command.Parameters.Add(new SqlParameter("@typeId", System.Data.SqlDbType.Int)).Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(new SqlParameter("@photo", System.Data.SqlDbType.VarBinary, -1)).Direction = System.Data.ParameterDirection.Output;
 
                             await command.ExecuteNonQueryAsync();
 
                             user.FirstName = (string)command.Parameters["@firstName"].Value;
                             user.LastName = (string)command.Parameters["@lastName"].Value;
                             user.Patronymic = (string)command.Parameters["@patronymic"].Value;
+                            user.PassportNumber = (string)command.Parameters["@passportNumber"].Value;
                             user.Email = (string)command.Parameters["@email"].Value;
+                            user.BirthDate = Convert.ToDateTime(command.Parameters["@birthDate"].Value);
                             user.PhoneNumer = (string)command.Parameters["@phoneNumber"].Value;
                             user.TypeId = Convert.ToInt32(command.Parameters["@typeId"].Value);
+                            user.Photo = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
                             user.Id = Convert.ToInt32(command.Parameters["@id"].Value);
                         }
                     }
 
                 }
                 connection.Close();
-
-                //var userParameter = new UserParameter(user, connection);
-                //userParameter.Connection = connection;
-                //userParameter.CurrentUser = user;
+                ControlsInteraction.EnableControls(this);
                 (Parent as Frame).Navigate(typeof(MainPage), user);
             }
             catch (Exception ex)

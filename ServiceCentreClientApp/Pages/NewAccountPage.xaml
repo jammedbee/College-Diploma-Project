@@ -1,0 +1,42 @@
+﻿<Page
+    x:Class="ServiceCentreClientApp.Pages.NewAccountPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ServiceCentreClientApp.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="500" Height="500">
+
+    <StackPanel>
+        <TextBlock Text="Логин" Width="300" Margin="0,100,0,0"/>
+        <StackPanel Orientation="Horizontal" Margin="100,0,0,0">
+            <TextBox Name="Login" Width="300" LostFocus="Login_LostFocus" TextChanging="Login_TextChanging">
+                <TextBox.ContextFlyout>
+                    <Flyout x:Name="LoginExistsFlyout">
+                        <StackPanel>
+                            <TextBlock Text="Такой логин уже существует"/>
+                        </StackPanel>
+                    </Flyout>
+                </TextBox.ContextFlyout>
+            </TextBox>
+            <ProgressRing Name="CheckingLoginProgress" Margin="10,0,0,0" Height="30" Width="30"/>
+        </StackPanel>
+        <TextBlock Text="Пароль" Width="300" Margin="0,10,0,0"/>
+        <PasswordBox Name="Password" Width="300" PasswordChanging="ConfirmedPassword_PasswordChanging"/>
+        <TextBlock Text="Подтвердите пароль" Width="300" Margin="0,10,0,0"/>
+        <PasswordBox Name="ConfirmedPassword" Width="300" PasswordChanging="ConfirmedPassword_PasswordChanging">
+            <PasswordBox.ContextFlyout>
+                <Flyout x:Name="PasswordsAreNotEqualFlyout">
+                    <StackPanel>
+                        <TextBlock Text="Пароли не совпадают"/>
+                    </StackPanel>
+                </Flyout>
+            </PasswordBox.ContextFlyout>
+        </PasswordBox>
+        <StackPanel Orientation="Horizontal" Height="100">
+            <Button Width="145" Height="30" Margin="100,50,0,0" Content="Далее" Name="Continue" Click="Continue_Click" IsEnabled="False"/>
+            <Button Width="145" Height="30" Margin="5,50,0,0" Content="Отмена" Name="Cancel" Click="Cancel_Click"/>
+        </StackPanel>
+    </StackPanel>
+</Page>
