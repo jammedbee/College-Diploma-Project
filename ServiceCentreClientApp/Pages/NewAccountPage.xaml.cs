@@ -106,7 +106,7 @@ namespace ServiceCentreClientApp.Pages
             }
             else
             {
-                using (SqlCommand command = new SqlCommand($"SELECT COUNT(*) FROM logins WHERE (logins.login LIKE '{Login.Text}')", connection))
+                using (SqlCommand command = new SqlCommand($"SELECT COUNT(*) FROM [Account] WHERE ([Login] LIKE '{Login.Text}')", connection))
                 {
                     if (connection.State == System.Data.ConnectionState.Closed)
                         await connection.OpenAsync();

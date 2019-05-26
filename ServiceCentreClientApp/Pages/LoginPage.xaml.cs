@@ -74,7 +74,7 @@ namespace ServiceCentreClientApp.Pages
                             user.PassportNumber = (string)command.Parameters["@passportNumber"].Value;
                             user.Email = (string)command.Parameters["@email"].Value;
                             user.BirthDate = Convert.ToDateTime(command.Parameters["@birthDate"].Value);
-                            user.PhoneNumer = (string)command.Parameters["@phoneNumber"].Value;
+                            user.PhoneNumber = (string)command.Parameters["@phoneNumber"].Value;
                             user.TypeId = Convert.ToInt32(command.Parameters["@typeId"].Value);
                             user.Photo = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
                             user.Id = Convert.ToInt32(command.Parameters["@id"].Value);

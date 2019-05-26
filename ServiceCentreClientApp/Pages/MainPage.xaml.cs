@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using ServiceCentreClientApp.Entities;
 using ServiceCentreClientApp.Pages;
+using ServiceCentreClientApp.Parameters;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -120,6 +121,21 @@ namespace ServiceCentreClientApp
         private void MainFrame_Navigated(object sender, NavigationEventArgs e)
         {
             menu.IsBackEnabled = mainFrame.CanGoBack;
+        }
+
+        private void CurrentUser_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            CurrentUserActions.ShowAt(CurrentUser);
+        }
+
+        private void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            (Parent as Frame).Navigate(typeof(UserActionsPage), new UserParameter(user, connection, new Account { Id = -1 }));
+        }
+
+        private void ListViewItem_Tapped_1(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            (Parent as Frame).Navigate(typeof(LoginPage), connection);
         }
     }
 }

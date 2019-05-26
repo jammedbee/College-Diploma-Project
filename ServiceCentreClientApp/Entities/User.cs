@@ -11,7 +11,7 @@ namespace ServiceCentreClientApp.Entities
         public string PassportNumber { get; set; }
         public string LastName { get; set; }
         public string Patronymic { get; set; }
-        public string PhoneNumer { get; set; }
+        public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public BitmapImage Photo { get; set; }
         public DateTime BirthDate { get; set; }

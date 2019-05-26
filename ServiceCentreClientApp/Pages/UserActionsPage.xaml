@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:UIExtensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:entities="using:ServiceCentreClientApp.Entities"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -52,7 +53,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Name="Photo" HorizontalAlignment="Left" Height="400" Margin="25,50,25,0" VerticalAlignment="Top" Width="400" Stretch="Fill" Source="/Assets/user.png"/>
+            <Image Grid.Column="0" Name="PhotoImage" HorizontalAlignment="Left" Height="400" Margin="25,50,25,0" VerticalAlignment="Top" Width="400" Stretch="Fill" Source="/Assets/user.png"/>
             <Button Name="UploadPhotoButton" Height="40" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,478,0,0" Click="UploadPhotoButton_Click">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xE11C;" FontSize="20" FontFamily="Segoe MDL2 Assets"/>
@@ -60,11 +61,23 @@
                 </StackPanel>
             </Button>
             <StackPanel Grid.Column="1" HorizontalAlignment="Left">
-                <TextBox Name="LastNameTextBox" Width="300" Header="Фамилия"/>
-                <TextBox Name="FirstNameTextBox" Width="300" Header="Имя"/>
-                <TextBox Name="Patronymic" Width="300" Header="Отчество"/>
+                <TextBox Name="LastNameTextBox" Header="Фамилия"/>
+                <TextBox Name="FirstNameTextBox" Header="Имя"/>
+                <TextBox Name="PatronymicTextBox" Header="Отчество"/>
                 <DatePicker Name="BirthDatePicker" Header="Дата рождения"/>
-                <TextBox Name="PassportNumberTextBox" Header="Номер паспорта" UIExtensions:TextBoxMask.Mask="9999 999999" UIExtensions:TextBoxMask.PlaceHolder=" "/>
+                <TextBox Name="PassportNumberTextBox" Header="Серия и номер паспорта" UIExtensions:TextBoxMask.Mask="9999 999999" UIExtensions:TextBoxMask.PlaceHolder=" "/>
+                <TextBox Name="PhoneNumberTextBox" Header="Номер телефона" UIExtensions:TextBoxMask.Mask="+7(999)999-99-99"/>
+                <TextBox Name="EmailTextBox" Header="Адрес электронной почты" TextChanging="EmailTextBox_TextChanging" UIExtensions:TextBoxRegex.Regex="(^[\w\d.+'-]+)@([\w\d]+)\.([\w]{2,}$)" UIExtensions:TextBoxRegex.ValidationMode="Normal"/>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox Name="TypeComboBox" Width="300" Header="Тип пользователя">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="entities:UserType">
+                                <TextBlock Text="{x:Bind Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Name="RefreshComboBoxButton" Click="RefreshComboBoxButton_Click" Height="32" VerticalAlignment="Bottom" Content="&#xE149;" FontFamily="Segoe MDL2 Assets"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </Grid>

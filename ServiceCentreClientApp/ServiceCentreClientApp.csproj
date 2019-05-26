@@ -127,6 +127,7 @@
     <Compile Include="Entities\RequestStatus.cs" />
     <Compile Include="Entities\Specs.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserType.cs" />
     <Compile Include="Pages\BlankPage.xaml.cs">
       <DependentUpon>BlankPage.xaml</DependentUpon>
     </Compile>

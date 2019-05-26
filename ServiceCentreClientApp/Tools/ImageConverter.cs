@@ -6,9 +6,9 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace ServiceCentreClientApp.Tools
 {
-    class ImageConverter
+    public static class ImageConverter
     {
-        public async Task<byte[]> ConvertRandomAccessStreamToByteArray(IRandomAccessStream stream)
+        public static async Task<byte[]> ConvertRandomAccessStreamToByteArray(IRandomAccessStream stream)
         {
             DataReader dataReader = new DataReader(stream.GetInputStreamAt(0));
             byte[] bytes = new byte[stream.Size];
@@ -17,7 +17,7 @@ namespace ServiceCentreClientApp.Tools
             return bytes;
         }
 
-        public async Task<byte[]> BitmapImageToByteArrayAsync(BitmapImage image)
+        public static async Task<byte[]> BitmapImageToByteArrayAsync(BitmapImage image)
         {
             RandomAccessStreamReference streamReference = RandomAccessStreamReference.CreateFromUri(image.UriSource);
             IRandomAccessStreamWithContentType streamWithContent = await streamReference.OpenReadAsync();
@@ -26,7 +26,7 @@ namespace ServiceCentreClientApp.Tools
             return buffer;
         }
 
-        public async Task<BitmapImage> ByteArrayToBitmapImageAsync(byte[] bytes)
+        public static async Task<BitmapImage> ByteArrayToBitmapImageAsync(byte[] bytes)
         {
             BitmapImage image = new BitmapImage();
             using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())

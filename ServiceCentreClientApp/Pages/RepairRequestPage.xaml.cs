@@ -148,7 +148,7 @@ namespace ServiceCentreClientApp.Pages
                                 LastName = reader.GetString(2),
                                 Patronymic = reader.GetString(3),
                                 Email = reader.GetString(4),
-                                PhoneNumer = reader.GetString(5),
+                                PhoneNumber = reader.GetString(5),
                                 TypeId = reader.GetInt32(6),
                                 AccountId = reader.GetInt32(7)
                             });

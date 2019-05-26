@@ -17,6 +17,18 @@
                 <NavigationViewItem Name="EngineerView" Tapped="EngineerView_Tapped" Content="engi" Icon="Target" Visibility="Collapsed"/>
                 <NavigationViewItem Name="ClientView" Tapped="ClientView_Tapped" Content="clie" Icon="AddFriend" Visibility="Collapsed"/>
             </NavigationView.MenuItems>
+            <NavigationView.PaneFooter>
+                <NavigationViewItem Name="CurrentUser" Content="{x:Bind user.GetFullName}" Icon="Contact" Tapped="CurrentUser_Tapped">
+                    <NavigationViewItem.ContextFlyout>
+                        <Flyout x:Name="CurrentUserActions" Placement="TopEdgeAlignedRight">
+                            <ListView>
+                                <ListViewItem Content="Профиль" Tapped="ListViewItem_Tapped"/>
+                                <ListViewItem Content="Выйти" Tapped="ListViewItem_Tapped_1"/>
+                            </ListView>
+                        </Flyout>
+                    </NavigationViewItem.ContextFlyout>
+                </NavigationViewItem>
+            </NavigationView.PaneFooter>
             <Frame Name="mainFrame" Navigated="MainFrame_Navigated"/>
         </NavigationView>
     </Grid>

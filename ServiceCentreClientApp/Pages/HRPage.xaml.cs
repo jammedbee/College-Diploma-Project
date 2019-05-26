@@ -73,7 +73,7 @@ namespace ServiceCentreClientApp.Pages
                                 }
                                 else
                                 {
-                                    bitmapImage = await new ImageConverter().ByteArrayToBitmapImageAsync((Byte[])reader["photo"]);
+                                    bitmapImage = await ImageConverter.ByteArrayToBitmapImageAsync((byte[])reader["photo"]);
                                 }
                                 users.Add(
                                     new User
@@ -85,11 +85,14 @@ namespace ServiceCentreClientApp.Pages
                                         BirthDate = reader.GetDateTime(4),
                                         PassportNumber = reader.GetString(5),
                                         Email = reader.GetString(6),
-                                        PhoneNumer = reader.GetString(7),
+                                        PhoneNumber = reader.GetString(7),
                                         Photo = bitmapImage,
                                         TypeId = reader.GetInt32(9),
                                         AccountId = reader.GetInt32(10)
                                     });
+
+                                var thisUser = users.Where(u => u.Id == user.Id).FirstOrDefault();
+                                users.Remove(thisUser);
                             }
                         }
                     }
@@ -108,14 +111,14 @@ namespace ServiceCentreClientApp.Pages
             (Parent as Frame).Navigate(typeof(UserActionsPage), new UserParameter(e.ClickedItem as User, connection));
         }
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-
+            await GetUsersFromServerAsync();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            (Parent as Frame).Navigate(typeof(UserActionsPage), new UserParameter(null, connection));
+            (Parent as Frame).Navigate(typeof(NewAccountPage), connection);
         }
     }
 }
