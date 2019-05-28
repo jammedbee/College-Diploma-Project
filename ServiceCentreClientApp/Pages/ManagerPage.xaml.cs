@@ -93,9 +93,11 @@ namespace ServiceCentreClientApp.Pages
                                 ManagerId = reader.GetInt32(5),
                                 EngineerId = reader.GetInt32(6),
                                 StatusId = reader.GetInt32(7),
-                                Price = reader.GetDecimal(8)
+                                IsUnderWarranty = reader.GetBoolean(8),
+                                Price = reader.GetDecimal(9)
                             });
                         }
+                        connection.Close();
                     }
                     else
                     {

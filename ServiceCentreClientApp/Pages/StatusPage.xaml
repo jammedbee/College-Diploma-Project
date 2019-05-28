@@ -1,0 +1,21 @@
+﻿<Page
+    x:Class="ServiceCentreClientApp.Parameters.StatusPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ServiceCentreClientApp.Parameters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel>
+            <TextBox Name="NameTextBox" Header="Название"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="SaveButton" Content="save" Click="SaveButton_Click"/>
+                <Button Name="EditButton" Content="edit" Click="EditButton_Click"/>
+                <Button Name="CancelButton" Content="cancel" Click="CancelButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,38 +1,49 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using ServiceCentreClientApp.Entities;
 using ServiceCentreClientApp.Parameters;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace ServiceCentreClientApp.Pages
 {
-    public sealed partial class EngineerPage : Page
+    public sealed partial class DirectorRequestsView : Page
     {
         SqlConnection connection;
         ObservableCollection<RepairRequest> requests;
         User user;
 
-        public EngineerPage()
+        public DirectorRequestsView()
         {
             this.InitializeComponent();
             requests = new ObservableCollection<RepairRequest>();
+
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            user = e.Parameter as User;
+            user = (e.Parameter as UserParameter).CurrentUser;
 
-            connection = new SqlConnection((App.Current as App).ConnectionString);
+            connection = (e.Parameter as UserParameter).Connection;
 
             await GetRequestsAsync(user);
 
             base.OnNavigatedTo(e);
         }
-
         private async Task GetRequestsAsync(User user)
         {
             if (user == null)
@@ -42,7 +53,7 @@ namespace ServiceCentreClientApp.Pages
 
             try
             {
-                Progress.IsActive = true;
+                this.Progress.IsActive = true;
                 if (requests.Count > 0)
                 {
                     requests = new ObservableCollection<RepairRequest>();
@@ -54,7 +65,7 @@ namespace ServiceCentreClientApp.Pages
                 }
 
                 var command = connection.CreateCommand();
-                command.CommandText = $"SELECT * FROM RepairRequest WHERE EngineerId = {user.Id}";
+                command.CommandText = $"SELECT * FROM RepairRequest";
 
                 using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
@@ -89,7 +100,7 @@ namespace ServiceCentreClientApp.Pages
                     }
                     else
                     {
-                        await new MessageDialog("Не было найдено ни одной заявки на Ваше имя.").ShowAsync();
+                        await new MessageDialog("Не было найдено ни одной заявки.").ShowAsync();
                     }
                 }
 
@@ -112,5 +123,6 @@ namespace ServiceCentreClientApp.Pages
         {
             await GetRequestsAsync(user);
         }
+
     }
 }

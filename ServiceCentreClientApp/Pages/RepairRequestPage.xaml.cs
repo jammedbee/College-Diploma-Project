@@ -42,7 +42,9 @@ namespace ServiceCentreClientApp.Pages
 
             currentUser = (e.Parameter as RepairRequestParameter).CurrentUser;
 
-            if ((currentUser.TypeId == 3) || (currentUser.TypeId == 6))
+            if ((currentUser.TypeId == (int)UserType.UserTypeId.Director)
+                || (currentUser.TypeId == (int)UserType.UserTypeId.Manager)
+                || (currentUser.TypeId == (int)UserType.UserTypeId.Engineer))
             {
                 EditButton.Visibility = Visibility.Visible;
             }
@@ -70,6 +72,11 @@ namespace ServiceCentreClientApp.Pages
                 SetCurrentValues(request);
                 SaveButton.Visibility = Visibility.Collapsed;
                 AddButton.Visibility = Visibility.Collapsed;
+            }
+
+            if (currentUser.TypeId == 6)
+            {
+                ControlsInteraction.DisableControls(this);
             }
 
             base.OnNavigatedTo(e);
@@ -147,10 +154,12 @@ namespace ServiceCentreClientApp.Pages
                                 FirstName = reader.GetString(1),
                                 LastName = reader.GetString(2),
                                 Patronymic = reader.GetString(3),
-                                Email = reader.GetString(4),
-                                PhoneNumber = reader.GetString(5),
-                                TypeId = reader.GetInt32(6),
-                                AccountId = reader.GetInt32(7)
+                                BirthDate = reader.GetDateTime(4),
+                                PassportNumber = reader.GetString(5),
+                                Email = reader.GetString(6),
+                                PhoneNumber = reader.GetString(7),
+                                TypeId = reader.GetInt32(9),
+                                AccountId = reader.GetInt32(10)
                             });
                 }
             }
@@ -243,13 +252,14 @@ namespace ServiceCentreClientApp.Pages
                     $"('{DateTime.Now.Year.ToString() + '-' + DateTime.Now.Month.ToString() + '-' + DateTime.Now.Day.ToString() + ' ' + DateTime.Now.TimeOfDay.ToString()}'," +
                     $" null, {(DeviceComboBox.SelectedItem as Device).Id}, {(ClientComboBox.SelectedItem as User).Id}," +
                     $"{(ManagerComboBox.SelectedItem as User).Id}, {(EngineerComboBox.SelectedItem as User).Id}, " +
-                    $"{(StatusComboBox.SelectedItem as RequestStatus).Id}, {PriceTextBox.Text})";
+                    $"{(StatusComboBox.SelectedItem as RequestStatus).Id}, 1, {PriceTextBox.Text})";
 
                 await command.ExecuteNonQueryAsync();
             }
 
             connection.Close();
             ControlsInteraction.EnableControls(this);
+            (Parent as Frame).GoBack();
             Progress.IsActive = false;
         }
 
@@ -267,7 +277,8 @@ namespace ServiceCentreClientApp.Pages
                     $"ManagerId = {(ManagerComboBox.SelectedItem as User).Id}," +
                     $"EngineerId = {(EngineerComboBox.SelectedItem as User).Id}," +
                     $"StatusId = {(StatusComboBox.SelectedItem as RequestStatus).Id}," +
-                    $"Price = {PriceTextBox.Text}" +
+                    $"IsUnderWarranty={Convert.ToInt32(WarrantyCheckBox.IsChecked)}," +
+                    $"Price = {PriceTextBox.Text} " +
                     $"WHERE Id = {request.Id}";
 
                 await command.ExecuteNonQueryAsync();
@@ -275,6 +286,7 @@ namespace ServiceCentreClientApp.Pages
 
             connection.Close();
             ControlsInteraction.EnableControls(this);
+            (Parent as Frame).GoBack();
             Progress.IsActive = false;
         }
 
@@ -286,19 +298,29 @@ namespace ServiceCentreClientApp.Pages
 
         private void NewClient_Click(object sender, RoutedEventArgs e)
         {
-
+            (Parent as Frame).Navigate(typeof(NewAccountPage), connection);
         }
 
         private void NewDevice_Click(object sender, RoutedEventArgs e)
         {
-
+            (Parent as Frame).Navigate(typeof(DevicePage), new DeviceParameter(null, connection));
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            ControlsInteraction.EnableControls(this);
+            if (currentUser.TypeId == (int)UserType.UserTypeId.Engineer)
+            {
+                StatusComboBox.IsEnabled = true;
+                SaveButton.IsEnabled = true;
+                WarrantyCheckBox.IsEnabled = true;
+            }
+            else
+            {
+                ControlsInteraction.EnableControls(this);
+            }
             EditButton.Visibility = Visibility.Collapsed;
             SaveButton.Visibility = Visibility.Visible;
+
         }
 
         private enum RequestAction : int

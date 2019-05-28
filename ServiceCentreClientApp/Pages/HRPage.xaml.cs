@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using ServiceCentreClientApp.Entities;
 using ServiceCentreClientApp.Parameters;
 using ServiceCentreClientApp.Tools;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -27,7 +18,7 @@ namespace ServiceCentreClientApp.Pages
     {
         SqlConnection connection;
         ObservableCollection<User> users;
-        User user;
+        User currentUser;
 
         public HRPage()
         {
@@ -37,7 +28,7 @@ namespace ServiceCentreClientApp.Pages
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            user = (e.Parameter as User);
+            currentUser = (e.Parameter as User);
             connection = new SqlConnection((App.Current as App).ConnectionString);
 
             await GetUsersFromServerAsync();
@@ -91,7 +82,7 @@ namespace ServiceCentreClientApp.Pages
                                         AccountId = reader.GetInt32(10)
                                     });
 
-                                var thisUser = users.Where(u => u.Id == user.Id).FirstOrDefault();
+                                var thisUser = users.Where(u => u.Id == currentUser.Id).FirstOrDefault();
                                 users.Remove(thisUser);
                             }
                         }

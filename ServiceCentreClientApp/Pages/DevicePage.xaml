@@ -10,12 +10,36 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel>
-            <ComboBox Name="TypeComboBox" ItemsSource="{x:Bind statuses}" Header="Тип устройства">
-                <DataTemplate x:DataType="entities:RequestStatus">
-                    <TextBlock Text="{x:Bind Name}"/>
-                </DataTemplate>
-            </ComboBox>
+        <StackPanel Width="300">
+            <TextBox Name="ModelTextBox" Header="Модель"/>
+            <TextBox Name="SerialNumberTextBox" Header="Серийный номер"/>
+            <CheckBox Name="WarrantyCheckBox" Content="На гарантии"/>
+            <StackPanel>
+                <ComboBox Name="TypeComboBox" ItemsSource="{x:Bind deviceTypes}" Header="Тип устройства" Width="300">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="entities:DeviceType">
+                            <TextBlock Text="{x:Bind Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Name="NewTypeButton" Click="NewTypeButton_Click" Content="new"/>
+            </StackPanel>
+            <StackPanel>
+                <ComboBox Name="ManufacturerComboBox" ItemsSource="{x:Bind manufacturers}" Header="Производитель" Width="300">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="entities:Manufacturer">
+                            <TextBlock Text="{x:Bind Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Name="NewManufacturerButton" Click="NewManufacturerButton_Click" Content="new"/>
+            </StackPanel>
+            <RichEditBox Name="DescriptionRichTextBox" Header="Описание проблемы" Height="150" TextWrapping="WrapWholeWords"/>
+            <StackPanel>
+                <Button Name="SaveButton" Content="Save" Click="SaveButton_Click"/>
+                <Button Name="EditButton" Content="Edit" Click="EditButton_Click"/>
+                <Button Name="Cancel" Content="Cancel" Click="Cancel_Click"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

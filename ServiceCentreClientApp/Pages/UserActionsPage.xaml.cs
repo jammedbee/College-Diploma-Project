@@ -1,26 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using ServiceCentreClientApp.Entities;
 using ServiceCentreClientApp.Parameters;
 using ServiceCentreClientApp.Tools;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.UI.Xaml.Navigation;
-using Windows.UI.Popups;
-using System.Collections.ObjectModel;
 
 namespace ServiceCentreClientApp.Pages
 {
@@ -37,7 +27,7 @@ namespace ServiceCentreClientApp.Pages
             this.InitializeComponent();
             types = new ObservableCollection<UserType>();
         }
-        
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             connection = (e.Parameter as UserParameter).Connection;
@@ -48,9 +38,11 @@ namespace ServiceCentreClientApp.Pages
             if (user != null)
             {
                 LoadUser(user);
+                
                 TypeComboBox.ItemsSource = types;
                 TypeComboBox.SelectedItem = types.FirstOrDefault(t => t.Id == user.TypeId);
                 ControlsInteraction.DisableControls(this);
+                SaveButton.Visibility = Visibility.Collapsed;
                 EditButton.IsEnabled = true;
                 CancelButton.IsEnabled = true;
                 if ((account != null) && (account.Id == -1))
@@ -58,11 +50,16 @@ namespace ServiceCentreClientApp.Pages
                     OptionsButton.Visibility = Visibility.Collapsed;
                 }
                 ByteImage = await GetUserPhoto(user);
-                BitmapImage bitmapImage = await ImageConverter.ByteArrayToBitmapImageAsync(ByteImage);
-                PhotoImage.Source = bitmapImage;
+                if (user.Photo != null)
+                {
+                    BitmapImage bitmapImage = await ImageConverter.ByteArrayToBitmapImageAsync(ByteImage);
+                    if (bitmapImage != null)
+                        PhotoImage.ImageSource = bitmapImage;
+                }
             }
             else
             {
+                EditButton.Visibility = Visibility.Collapsed;
                 TypeComboBox.ItemsSource = types;
             }
 
@@ -115,7 +112,7 @@ namespace ServiceCentreClientApp.Pages
                 WriteableBitmap writeableBitmap = new WriteableBitmap(image.PixelWidth, image.PixelHeight);
                 await writeableBitmap.SetSourceAsync(await selectedFile.OpenAsync(Windows.Storage.FileAccessMode.Read));
                 ByteImage = await ImageConverter.ConvertRandomAccessStreamToByteArray(await selectedFile.OpenAsync(Windows.Storage.FileAccessMode.Read));
-                PhotoImage.Source = writeableBitmap;
+                PhotoImage.ImageSource = writeableBitmap;
             }
         }
 
@@ -172,7 +169,7 @@ namespace ServiceCentreClientApp.Pages
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
             if (connection.State != System.Data.ConnectionState.Open)
                 await connection.OpenAsync();
             if (user != null)
@@ -195,19 +192,24 @@ namespace ServiceCentreClientApp.Pages
                 {
                     command.CommandText = $"UPDATE [dbo].[User] SET " +
                         $"BirthDate = '{editedUser.BirthDate.Date.Year.ToString() + "-" + editedUser.BirthDate.Date.Month.ToString() + "-" + editedUser.BirthDate.Date.Day.ToString()}', " +
-                        $"FirstName = '{editedUser.FirstName}', LastName = '{editedUser.LastName}', Patronymic = '{editedUser.Patronymic}', " +
+                        $"FirstName = N'{editedUser.FirstName}', LastName = N'{editedUser.LastName}', Patronymic = N'{editedUser.Patronymic}', " +
                         $"PassportNumber = '{editedUser.PassportNumber}', PhoneNumber = '{editedUser.PhoneNumber}', Email = '{editedUser.Email}', " +
-                        $"TypeId = {editedUser.TypeId}, Photo = @photo " +
-                        $"WHERE [User].[Id] = {editedUser.Id}";
+                        $"TypeId = {editedUser.TypeId}, Photo = ";
 
-                    var imageParameter = new SqlParameter("@photo", System.Data.SqlDbType.VarBinary)
+                    var imageParameter = new SqlParameter("@photo", System.Data.SqlDbType.VarBinary);
+                    
+                    imageParameter.Direction = System.Data.ParameterDirection.Input;
+                    if (ByteImage != null)
                     {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Size = ByteImage.Length,
-                        Value = ByteImage
-                    };
-
-                    command.Parameters.Add(imageParameter);
+                        imageParameter.Size = ByteImage.Length;
+                        imageParameter.Value = ByteImage;
+                        command.CommandText += $"@photo WHERE [User].[Id] = {editedUser.Id}";
+                        command.Parameters.Add(imageParameter);
+                    }
+                    else
+                    {
+                        command.CommandText += $"null WHERE [User].[Id] = {editedUser.Id}";
+                    }
 
                     await command.ExecuteNonQueryAsync();
                 }
@@ -241,19 +243,23 @@ namespace ServiceCentreClientApp.Pages
                     command.Parameters.Clear();
                     command.CommandType = System.Data.CommandType.Text;
                     command.CommandText = $"INSERT INTO [dbo].[User] VALUES (" +
-                        $"'{newUser.FirstName}', '{newUser.LastName}', '{newUser.Patronymic}', " +
+                        $"N'{newUser.FirstName}', N'{newUser.LastName}', N'{newUser.Patronymic}', " +
                         $"'{newUser.BirthDate.Date.Year.ToString() + "-" + newUser.BirthDate.Date.Month.ToString() + "-" + newUser.BirthDate.Date.Day.ToString()}', " +
-                        $"'{newUser.PassportNumber}', '{newUser.PhoneNumber}', '{newUser.Email}', " +
-                        $"@photo, {newUser.TypeId}, {account.Id})";
+                        $"'{newUser.PassportNumber}', '{newUser.Email}', '{newUser.PhoneNumber}', ";
 
-                    var imageParameter = new SqlParameter("@photo", System.Data.SqlDbType.VarBinary)
+                    var imageParameter = new SqlParameter("@photo", System.Data.SqlDbType.VarBinary);
+                    imageParameter.Direction = System.Data.ParameterDirection.Input;
+                    if (ByteImage != null)
                     {
-                        Direction = System.Data.ParameterDirection.Input,
-                        Size = ByteImage.Length,
-                        Value = ByteImage
-                    };
-
-                    command.Parameters.Add(imageParameter);
+                        imageParameter.Size = ByteImage.Length;
+                        imageParameter.Value = ByteImage;
+                        command.CommandText += $"@photo, {newUser.TypeId}, {account.Id})";
+                        command.Parameters.Add(imageParameter);
+                    }
+                    else
+                    {
+                        command.CommandText += $"null, {newUser.TypeId}, {account.Id})";
+                    }
 
                     await command.ExecuteNonQueryAsync();
                 }
@@ -263,6 +269,9 @@ namespace ServiceCentreClientApp.Pages
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             ControlsInteraction.EnableControls(this);
+            
+            SaveButton.Visibility = Visibility.Visible;
+            EditButton.Visibility = Visibility.Collapsed;
         }
 
         private void EmailTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
@@ -271,7 +280,7 @@ namespace ServiceCentreClientApp.Pages
             {
                 // To-Do
             }
-                
+
         }
 
         private async void RefreshComboBoxButton_Click(object sender, RoutedEventArgs e)

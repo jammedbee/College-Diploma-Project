@@ -13,5 +13,6 @@ namespace ServiceCentreClientApp.Entities
         public int EngineerId { get; set; }
         public int StatusId { get; set; }
         public decimal Price { get; set; }
+        public bool IsUnderWarranty { get; set; }
     }
 }

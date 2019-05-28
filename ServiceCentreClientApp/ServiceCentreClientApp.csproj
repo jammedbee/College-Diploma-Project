@@ -131,14 +131,17 @@
     <Compile Include="Pages\BlankPage.xaml.cs">
       <DependentUpon>BlankPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ClientPage.xaml.cs">
-      <DependentUpon>ClientPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\DevicePage.xaml.cs">
       <DependentUpon>DevicePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DeviceTypePage.xaml.cs">
+      <DependentUpon>DeviceTypePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\DirectorPage.xaml.cs">
       <DependentUpon>DirectorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DirectorRequestsView.xaml.cs">
+      <DependentUpon>DirectorRequestsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\EngineerPage.xaml.cs">
       <DependentUpon>EngineerPage.xaml</DependentUpon>
@@ -155,6 +158,9 @@
     <Compile Include="Pages\ManagerPage.xaml.cs">
       <DependentUpon>ManagerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ManufacturerPage.xaml.cs">
+      <DependentUpon>ManufacturerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\NewAccountPage.xaml.cs">
       <DependentUpon>NewAccountPage.xaml</DependentUpon>
     </Compile>
@@ -169,7 +175,12 @@
     </Compile>
     <Compile Include="Parameters\ConnectionParameter.cs" />
     <Compile Include="Parameters\DeviceParameter.cs" />
+    <Compile Include="Parameters\ManufacturerParameter.cs" />
     <Compile Include="Parameters\RequestParameter.cs" />
+    <Compile Include="Pages\StatusPage.xaml.cs">
+      <DependentUpon>StatusPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Parameters\StatusParameter.cs" />
     <Compile Include="Parameters\UserParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\ControlsInteraction.cs" />
@@ -201,15 +212,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ClientPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\DevicePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\DeviceTypePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\DirectorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DirectorRequestsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -233,6 +248,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\ManufacturerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\NewAccountPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -246,6 +265,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\UserActionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StatusPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

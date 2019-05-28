@@ -9,6 +9,22 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button Grid.Column="0" Grid.Row="0" Content="Заявки" Name="RequestsViewButton" Click="RequestsViewButton_Click"/>
+        <Button Grid.Column="1" Grid.Row="0" Content="Персонал" Name="PersonnelViewButton" Click="PersonnelViewButton_Click"/>
+        
+        
     </Grid>
 </Page>

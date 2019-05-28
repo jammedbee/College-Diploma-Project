@@ -15,15 +15,17 @@
                 <NavigationViewItem Name="HRView" Tapped="HRView_Tapped" Content="hr" Icon="People" Visibility="Collapsed"/>
                 <NavigationViewItem Name="ManagerView" Tapped="ManagerView_Tapped" Content="mana" Icon="Contact2" Visibility="Collapsed"/>
                 <NavigationViewItem Name="EngineerView" Tapped="EngineerView_Tapped" Content="engi" Icon="Target" Visibility="Collapsed"/>
-                <NavigationViewItem Name="ClientView" Tapped="ClientView_Tapped" Content="clie" Icon="AddFriend" Visibility="Collapsed"/>
+                <NavigationViewItem Name="DeveloperView" Tapped="DeveloperView_Tapped" Content="dev" Icon="AddFriend" Visibility="Collapsed"/>
             </NavigationView.MenuItems>
             <NavigationView.PaneFooter>
-                <NavigationViewItem Name="CurrentUser" Content="{x:Bind user.GetFullName}" Icon="Contact" Tapped="CurrentUser_Tapped">
+                <NavigationViewItem Name="CurrentUser" Content="{x:Bind currentUser.GetFullName}" Icon="Contact" Tapped="CurrentUser_Tapped">
                     <NavigationViewItem.ContextFlyout>
                         <Flyout x:Name="CurrentUserActions" Placement="TopEdgeAlignedRight">
                             <ListView>
-                                <ListViewItem Content="Профиль" Tapped="ListViewItem_Tapped"/>
-                                <ListViewItem Content="Выйти" Tapped="ListViewItem_Tapped_1"/>
+                                <ListView.Items>
+                                    <ListViewItem Content="Профиль" Tapped="ListViewItem_Tapped"/>
+                                    <ListViewItem Content="Выйти" Tapped="ListViewItem_Tapped_1"/>
+                                </ListView.Items>
                             </ListView>
                         </Flyout>
                     </NavigationViewItem.ContextFlyout>

@@ -13,7 +13,7 @@ namespace ServiceCentreClientApp
     public sealed partial class MainPage : Page
     {
         private SqlConnection connection;
-        private User user;
+        private User currentUser;
 
         public MainPage()
         {
@@ -23,8 +23,8 @@ namespace ServiceCentreClientApp
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            user = e.Parameter as User;
-            await HideNavigationItems(user);
+            currentUser = e.Parameter as User;
+            await HideNavigationItems(currentUser);
             base.OnNavigatedTo(e);
         }
 
@@ -65,11 +65,11 @@ namespace ServiceCentreClientApp
                         break;
 
                     case 6:
+                        foreach (var item in menu.MenuItems)
+                        {
+                            (item as NavigationViewItem).Visibility = Windows.UI.Xaml.Visibility.Visible;
+                        }
                         mainFrame.Navigate(typeof(DirectorPage), user);
-                        break;
-
-                    case 7:
-                        mainFrame.Navigate(typeof(ClientPage), user);
                         break;
 
                     default:
@@ -84,29 +84,24 @@ namespace ServiceCentreClientApp
 
         private void DirectorView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            mainFrame.Navigate(typeof(DirectorPage), user);
+            mainFrame.Navigate(typeof(DirectorPage), currentUser);
         }
 
         private void HRView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            mainFrame.Navigate(typeof(HRPage), user);
+            mainFrame.Navigate(typeof(HRPage), currentUser);
         }
 
         private void ManagerView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            mainFrame.Navigate(typeof(ManagerPage), user);
+            mainFrame.Navigate(typeof(ManagerPage), currentUser);
         }
 
         private void EngineerView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            mainFrame.Navigate(typeof(EngineerPage), user);
+            mainFrame.Navigate(typeof(EngineerPage), currentUser);
         }
-
-        private void ClientView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            mainFrame.Navigate(typeof(ClientPage), user);
-        }
-
+        
         private void Menu_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             menu.IsBackEnabled = mainFrame.CanGoBack;
@@ -130,12 +125,18 @@ namespace ServiceCentreClientApp
 
         private void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            (Parent as Frame).Navigate(typeof(UserActionsPage), new UserParameter(user, connection, new Account { Id = -1 }));
+            mainFrame.Navigate(typeof(UserActionsPage), new UserParameter(currentUser, connection, new Account { Id = -1 }));
+            CurrentUserActions.Hide();
         }
 
         private void ListViewItem_Tapped_1(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             (Parent as Frame).Navigate(typeof(LoginPage), connection);
+        }
+
+        private void DeveloperView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+
         }
     }
 }

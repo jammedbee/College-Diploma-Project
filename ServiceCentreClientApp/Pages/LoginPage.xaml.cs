@@ -32,7 +32,8 @@ namespace ServiceCentreClientApp.Pages
             Progress.IsActive = true;
             try
             {
-                await connection.OpenAsync();
+                if (connection.State != System.Data.ConnectionState.Open)
+                    await connection.OpenAsync();
 
                 if (connection.State == System.Data.ConnectionState.Open)
                 {

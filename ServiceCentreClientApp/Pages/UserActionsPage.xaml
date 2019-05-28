@@ -53,7 +53,11 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Name="PhotoImage" HorizontalAlignment="Left" Height="400" Margin="25,50,25,0" VerticalAlignment="Top" Width="400" Stretch="Fill" Source="/Assets/user.png"/>
+            <Ellipse Grid.Column="0" Width="400" Height="400" HorizontalAlignment="Left" Margin="25,50,25,0" VerticalAlignment="Top">
+                <Ellipse.Fill>
+                    <ImageBrush x:Name="PhotoImage" Stretch="Fill" ImageSource="/Assets/user.png"/>
+                </Ellipse.Fill>
+            </Ellipse>
             <Button Name="UploadPhotoButton" Height="40" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,478,0,0" Click="UploadPhotoButton_Click">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xE11C;" FontSize="20" FontFamily="Segoe MDL2 Assets"/>

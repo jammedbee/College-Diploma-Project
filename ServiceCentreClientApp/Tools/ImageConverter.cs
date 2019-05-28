@@ -28,6 +28,9 @@ namespace ServiceCentreClientApp.Tools
 
         public static async Task<BitmapImage> ByteArrayToBitmapImageAsync(byte[] bytes)
         {
+            if (bytes == null)
+                return null;
+
             BitmapImage image = new BitmapImage();
             using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
             {

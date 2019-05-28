@@ -12,19 +12,39 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+using ServiceCentreClientApp.Pages;
+using ServiceCentreClientApp.Parameters;
+using ServiceCentreClientApp.Entities;
+using System.Data.SqlClient;
 
 namespace ServiceCentreClientApp.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class DirectorPage : Page
     {
+        User currentUser;
+        SqlConnection connection;
+
         public DirectorPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            currentUser = (e.Parameter as User);
+            connection = new SqlConnection((App.Current as App).ConnectionString);
+
+            base.OnNavigatedTo(e);
+        }
+
+        private void PersonnelViewButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RequestsViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            (Parent as Frame).Navigate(typeof(DirectorRequestsView), new UserParameter(currentUser, connection));
         }
     }
 }

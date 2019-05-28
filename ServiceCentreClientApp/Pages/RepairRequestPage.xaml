@@ -14,31 +14,6 @@
             <StackPanel>
                 <TextBlock Text="Номер заявки"/>
                 <TextBlock Name="IdTextBlock"/>
-                <TextBlock Text="Дата оформления"/>
-                <TextBlock Name="RegistrationDate" Text="{x:Bind request.RegistrationDate}"/>
-                <TextBlock Text="Дата последнего обновления"/>
-                <TextBlock Name="UpdateDate" Text="{x:Bind request.UpdateDate}"/>
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox Name="DeviceComboBox" ItemsSource="{x:Bind devices}" Header="Устройтсво" Width="300">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate x:DataType="entities:Device">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock>
-                                <Run Text="{x:Bind GetDetailedInfo()}"/>
-                                    </TextBlock>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <Button Name="NewDevice" Content="+" Click="NewDevice_Click"/>
-                </StackPanel>
-                <ComboBox Name="ManagerComboBox" ItemsSource="{x:Bind managers}" Header="Ответственный менеджер" Width="300">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="entities:User">
-                            <TextBlock Text="{x:Bind GetFullName}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
                 <StackPanel Orientation="Horizontal">
                     <ComboBox Name="ClientComboBox" ItemsSource="{x:Bind clients}" Header="Клиент" Width="300">
                         <ComboBox.ItemTemplate>
@@ -53,6 +28,31 @@
                     </ComboBox>
                     <Button Name="NewClient" Content="+" Click="NewClient_Click"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox Name="DeviceComboBox" ItemsSource="{x:Bind devices}" Header="Устройтсво" Width="300">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="entities:Device">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock>
+                                <Run Text="{x:Bind GetDetailedInfo()}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Name="NewDevice" Content="+" Click="NewDevice_Click"/>
+                </StackPanel>
+                <TextBlock Text="Дата оформления"/>
+                <TextBlock Name="RegistrationDate" Text="{x:Bind request.RegistrationDate}"/>
+                <TextBlock Text="Дата последнего обновления"/>
+                <TextBlock Name="UpdateDate" Text="{x:Bind request.UpdateDate}"/>
+                <ComboBox Name="ManagerComboBox" ItemsSource="{x:Bind managers}" Header="Ответственный менеджер" Width="300">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="entities:User">
+                            <TextBlock Text="{x:Bind GetFullName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <ComboBox Name="EngineerComboBox" ItemsSource="{x:Bind engineers}" Header="Ответственный инженер" Width="300">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="entities:User">
@@ -73,6 +73,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+                <CheckBox Name="WarrantyCheckBox" Content="Гарантия"/>
                 <TextBlock Text="Стоимость"/>
                 <TextBox Name="PriceTextBox" Width="300" HorizontalAlignment="Left"/>
             </StackPanel>
