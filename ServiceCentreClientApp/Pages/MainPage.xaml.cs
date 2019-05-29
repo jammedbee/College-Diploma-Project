@@ -123,13 +123,13 @@ namespace ServiceCentreClientApp
             CurrentUserActions.ShowAt(CurrentUser);
         }
 
-        private void ListViewItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void MenuFlyoutItem_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             mainFrame.Navigate(typeof(UserActionsPage), new UserParameter(currentUser, connection, new Account { Id = -1 }));
             CurrentUserActions.Hide();
         }
 
-        private void ListViewItem_Tapped_1(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void MenuFlyoutItem_Tapped_1(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             (Parent as Frame).Navigate(typeof(LoginPage), connection);
         }

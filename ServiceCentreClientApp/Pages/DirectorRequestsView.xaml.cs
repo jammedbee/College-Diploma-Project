@@ -53,7 +53,7 @@ namespace ServiceCentreClientApp.Pages
 
             try
             {
-                this.Progress.IsActive = true;
+                ProgressProgressRing.IsActive = true;
                 if (requests.Count > 0)
                 {
                     requests = new ObservableCollection<RepairRequest>();
@@ -110,7 +110,7 @@ namespace ServiceCentreClientApp.Pages
             {
                 await new MessageDialog($"Произошла следующая ошибка: \"{ex.Message}\"", "Что-то пошло не так :(").ShowAsync();
             }
-            Progress.IsActive = false;
+            ProgressProgressRing.IsActive = false;
         }
 
         private void RequestsGridView_ItemClick(object sender, ItemClickEventArgs e)

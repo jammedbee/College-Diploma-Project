@@ -7,39 +7,54 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="1280" Height="720" MinHeight="720" MaxHeight="1080" MaxWidth="1920" MinWidth="1280">
 
     <Grid>
-        <StackPanel Width="300">
-            <TextBox Name="ModelTextBox" Header="Модель"/>
-            <TextBox Name="SerialNumberTextBox" Header="Серийный номер"/>
-            <CheckBox Name="WarrantyCheckBox" Content="На гарантии"/>
-            <StackPanel>
-                <ComboBox Name="TypeComboBox" ItemsSource="{x:Bind deviceTypes}" Header="Тип устройства" Width="300">
+        <StackPanel Width="500">
+            <TextBox Name="ModelTextBox" Header="Модель" FontSize="18" Margin="2,5,2,5"/>
+            <TextBox Name="SerialNumberTextBox" Header="Серийный номер" FontSize="18" Margin="2,5,2,5"/>
+            <CheckBox Name="WarrantyCheckBox" Content="На гарантии" FontSize="18" Margin="2,5,2,5"/>
+            <StackPanel Orientation="Horizontal" Margin="2,5,2,5">
+                <ComboBox Name="TypeComboBox" ItemsSource="{x:Bind deviceTypes}" Header="Тип устройства" FontSize="18" Width="450">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="entities:DeviceType">
                             <TextBlock Text="{x:Bind Name}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button Name="NewTypeButton" Click="NewTypeButton_Click" Content="new"/>
+                <Button Name="NewTypeButton" FontFamily="Segoe MDL2 Assets" Click="NewTypeButton_Click" Content="&#xE109;" Height="36" Width="36" VerticalAlignment="Bottom" Margin="5,0,0,0" ToolTipService.ToolTip="Добавить новое устройство"/>
             </StackPanel>
-            <StackPanel>
-                <ComboBox Name="ManufacturerComboBox" ItemsSource="{x:Bind manufacturers}" Header="Производитель" Width="300">
+            <StackPanel Margin="2,5,2,5" Orientation="Horizontal">
+                <ComboBox Name="ManufacturerComboBox" ItemsSource="{x:Bind manufacturers}" Header="Производитель" FontSize="18" Width="450">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="entities:Manufacturer">
                             <TextBlock Text="{x:Bind Name}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button Name="NewManufacturerButton" Click="NewManufacturerButton_Click" Content="new"/>
+                <Button Name="NewManufacturerButton" Click="NewManufacturerButton_Click" Content="&#xE109;" FontFamily="Segoe MDL2 Assets" Width="36" Height="36" VerticalAlignment="Bottom" Margin="5,0" ToolTipService.ToolTip="Добавить нового производителя"/>
             </StackPanel>
-            <RichEditBox Name="DescriptionRichTextBox" Header="Описание проблемы" Height="150" TextWrapping="WrapWholeWords"/>
-            <StackPanel>
-                <Button Name="SaveButton" Content="Save" Click="SaveButton_Click"/>
-                <Button Name="EditButton" Content="Edit" Click="EditButton_Click"/>
-                <Button Name="Cancel" Content="Cancel" Click="Cancel_Click"/>
-            </StackPanel>
+            <RichEditBox Name="DescriptionRichTextBox" Header="Описание проблемы" Height="150" TextWrapping="WrapWholeWords" FontSize="18" Margin="2,5,2,5"/>
+            <Grid Margin="2,5,2,5">
+                <Button Name="SaveButton" Click="SaveButton_Click" Width="245" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE10B;" FontSize="26"/>
+                        <TextBlock Text="Сохранить" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="EditButton" Click="EditButton_Click" Width="245" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE104;" FontSize="26"/>
+                        <TextBlock Text="Редактировать" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="Cancel" Click="Cancel_Click" HorizontalAlignment="Right" Width="245">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE106;" FontSize="20"/>
+                        <TextBlock Text="Отмена" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>

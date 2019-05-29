@@ -6,32 +6,28 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="720" MaxHeight="1440" MaxWidth="2560" MinWidth="1280">
 
-    <Grid>
-        <NavigationView Name="menu" IsPaneOpen="False" PaneTitle="Меню" PaneDisplayMode="LeftCompact" ItemInvoked="Menu_ItemInvoked" BackRequested="Menu_BackRequested">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <NavigationView VerticalAlignment="Stretch" Name="menu" IsPaneOpen="False" PaneTitle="Меню" FontSize="18" PaneDisplayMode="LeftCompact" ItemInvoked="Menu_ItemInvoked" BackRequested="Menu_BackRequested">
             <NavigationView.MenuItems>
-                <NavigationViewItem Name="DirectorView" Tapped="DirectorView_Tapped" Content="dir" Icon="SyncFolder" Visibility="Collapsed"/>
-                <NavigationViewItem Name="HRView" Tapped="HRView_Tapped" Content="hr" Icon="People" Visibility="Collapsed"/>
-                <NavigationViewItem Name="ManagerView" Tapped="ManagerView_Tapped" Content="mana" Icon="Contact2" Visibility="Collapsed"/>
-                <NavigationViewItem Name="EngineerView" Tapped="EngineerView_Tapped" Content="engi" Icon="Target" Visibility="Collapsed"/>
-                <NavigationViewItem Name="DeveloperView" Tapped="DeveloperView_Tapped" Content="dev" Icon="AddFriend" Visibility="Collapsed"/>
+                <NavigationViewItem Name="DirectorView" Tapped="DirectorView_Tapped" FontSize="18" Content="Общая информация" Icon="Home" Visibility="Collapsed"/>
+                <NavigationViewItem Name="HRView" Tapped="HRView_Tapped" Content="Сотрудники" FontSize="18" Icon="People" Visibility="Collapsed"/>
+                <NavigationViewItem Name="ManagerView" Tapped="ManagerView_Tapped" Content="Заявки" FontSize="18" Icon="Page2" Visibility="Collapsed"/>
+                <NavigationViewItem Name="EngineerView" Tapped="EngineerView_Tapped" Content="Заявки" FontSize="18" Icon="Page" Visibility="Collapsed"/>
+                <NavigationViewItem Name="DeveloperView" Tapped="DeveloperView_Tapped" Content="Для разработчика" FontSize="18" Icon="Repair" Visibility="Collapsed"/>
             </NavigationView.MenuItems>
             <NavigationView.PaneFooter>
                 <NavigationViewItem Name="CurrentUser" Content="{x:Bind currentUser.GetFullName}" Icon="Contact" Tapped="CurrentUser_Tapped">
                     <NavigationViewItem.ContextFlyout>
-                        <Flyout x:Name="CurrentUserActions" Placement="TopEdgeAlignedRight">
-                            <ListView>
-                                <ListView.Items>
-                                    <ListViewItem Content="Профиль" Tapped="ListViewItem_Tapped"/>
-                                    <ListViewItem Content="Выйти" Tapped="ListViewItem_Tapped_1"/>
-                                </ListView.Items>
-                            </ListView>
-                        </Flyout>
+                        <MenuFlyout x:Name="CurrentUserActions" Placement="TopEdgeAlignedRight">
+                            <MenuFlyoutItem Text="Профиль" Tapped="MenuFlyoutItem_Tapped"/>
+                            <MenuFlyoutItem Text="Выйти" Tapped="MenuFlyoutItem_Tapped_1"/>
+                        </MenuFlyout>
                     </NavigationViewItem.ContextFlyout>
                 </NavigationViewItem>
             </NavigationView.PaneFooter>
-            <Frame Name="mainFrame" Navigated="MainFrame_Navigated"/>
+            <Frame Name="mainFrame" Navigated="MainFrame_Navigated" MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
         </NavigationView>
     </Grid>
 </Page>

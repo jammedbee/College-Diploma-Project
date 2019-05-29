@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
-    <Grid>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080">
         <ProgressRing x:Name="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="150"/>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="600">
             <TextBox Name="loginTextBox" Header="Логин" FontSize="24" Margin="0,0,0,5" Text="jammedbee"/>

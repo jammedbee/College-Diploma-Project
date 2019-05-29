@@ -6,19 +6,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:ServiceCentreClientApp.Entities"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
-    <Grid>
+    <Grid MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <ProgressRing x:Name="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="150"/>
         <StackPanel>
             <RelativePanel>
-                <TextBlock Text="Сотрудники" FontSize="30" Margin="5"/>
-                <Button Name="RefreshButton" Click="RefreshButton_Click" RelativePanel.AlignRightWithPanel="True" Height="40" Width="40" Margin="2">
+                <TextBlock Text="Сотрудники" FontSize="36" Margin="5"/>
+                <Button Name="RefreshButton" Click="RefreshButton_Click" RelativePanel.AlignRightWithPanel="True" Height="45" Width="45" Margin="5">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE149;" ToolTipService.ToolTip="Перезагрузить список"/>
+                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="24" Text="&#xE149;" ToolTipService.ToolTip="Перезагрузить список"/>
                     </StackPanel>
                 </Button>
-                <Button Name="AddButton" Click="AddButton_Click" FontSize="14" Height="40" Width="120" Margin="2" RelativePanel.LeftOf="RefreshButton">
+                <Button Name="AddButton" Click="AddButton_Click" FontSize="20" Height="45" Width="150" Margin="0,5" RelativePanel.LeftOf="RefreshButton">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE109;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                         <TextBlock Text="Добавить" Margin="10,0"/>

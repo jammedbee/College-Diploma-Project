@@ -1,14 +1,13 @@
 ﻿<Page
     x:Class="ServiceCentreClientApp.Pages.RootPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ServiceCentreClientApp.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="720" MaxHeight="1440" MaxWidth="2560" MinWidth="1280">
 
-    <Grid>
-        <Frame Name="mainFrame"/>
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="720" MaxHeight="1440" MaxWidth="2560" MinWidth="1280">
+        <Frame Name="mainFrame" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
     </Grid>
 </Page>

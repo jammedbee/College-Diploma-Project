@@ -25,7 +25,8 @@ namespace ServiceCentreClientApp.Pages
     {
         SqlConnection connection;
         ObservableCollection<RepairRequest> requests;
-        User user;
+        User currentUser;
+        ObservableCollection<RequestStatus> statuses;
 
         public ManagerPage()
         {
@@ -33,13 +34,43 @@ namespace ServiceCentreClientApp.Pages
             requests = new ObservableCollection<RepairRequest>();
         }
 
+        private async Task<ObservableCollection<RequestStatus>> GetStatusesAsync()
+        {
+            if (connection.State != System.Data.ConnectionState.Open)
+                await connection.OpenAsync();
+
+            var retrievedStatuses = new ObservableCollection<RequestStatus>();
+            retrievedStatuses.Add(new RequestStatus { Id = 0, Name = "Не выбрано" });
+
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT * FROM RequestStatus";
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            retrievedStatuses.Add(new RequestStatus { Id = reader.GetInt32(0), Name = reader.GetString(1) });
+                        }
+                    }
+                }
+            }
+
+            connection.Close();
+            return retrievedStatuses;
+        }
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            user = e.Parameter as User;
+            currentUser = e.Parameter as User;
 
             connection = new SqlConnection((App.Current as App).ConnectionString);
 
-            await GetRequestsAsync(user);
+            await GetRequestsAsync(currentUser);
+            statuses = await GetStatusesAsync();
+            FilterComboBox.ItemsSource = statuses;
 
             base.OnNavigatedTo(e);
         }
@@ -53,7 +84,7 @@ namespace ServiceCentreClientApp.Pages
 
             try
             {
-                Progress.IsActive = true;
+                ProgressProgressRing.IsActive = true;
                 if (requests.Count > 0)
                 {
                     requests = new ObservableCollection<RepairRequest>();
@@ -111,29 +142,38 @@ namespace ServiceCentreClientApp.Pages
             {
                 await new MessageDialog($"Произошла следующая ошибка: \"{ex.Message}\"", "Что-то пошло не так :(").ShowAsync();
             }
-            Progress.IsActive = false;
+            ProgressProgressRing.IsActive = false;
         }
 
         private void RequestsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             (Parent as Frame).Navigate(typeof(RepairRequestPage), new RepairRequestParameter(
-                e.ClickedItem as RepairRequest, user, connection));
+                e.ClickedItem as RepairRequest, currentUser, connection));
         }
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            await GetRequestsAsync(user);
+            await GetRequestsAsync(currentUser);
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             (Parent as Frame).Navigate(typeof(RepairRequestPage), new RepairRequestParameter(
-                null, user, connection));
+                null, currentUser, connection));
         }
 
-        private void SelectButton_Click(object sender, RoutedEventArgs e)
+        private void ResetFilterButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            RequestsGridView.ItemsSource = requests;
+        }
+
+        private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((FilterComboBox.SelectedItem as RequestStatus).Id != 0)
+            {
+                var filteredRequest = requests.Where(r => r.StatusId == (FilterComboBox.SelectedItem as RequestStatus).Id);
+                RequestsGridView.ItemsSource = filteredRequest;
+            }
         }
     }
 }

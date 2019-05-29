@@ -1,14 +1,13 @@
 ﻿<Page
     x:Class="ServiceCentreClientApp.Pages.DirectorPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ServiceCentreClientApp.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
-    <Grid>
+    <Grid MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -24,7 +23,5 @@
         </Grid.RowDefinitions>
         <Button Grid.Column="0" Grid.Row="0" Content="Заявки" Name="RequestsViewButton" Click="RequestsViewButton_Click"/>
         <Button Grid.Column="1" Grid.Row="0" Content="Персонал" Name="PersonnelViewButton" Click="PersonnelViewButton_Click"/>
-        
-        
     </Grid>
 </Page>

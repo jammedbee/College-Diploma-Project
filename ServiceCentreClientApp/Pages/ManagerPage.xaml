@@ -6,25 +6,39 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:ServiceCentreClientApp.Entities"
+    xmlns:system="using:System"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
-    <Grid>
-        <ProgressRing x:Name="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="150"/>
+    <Grid MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ProgressRing x:Name="ProgressProgressRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="150"/>
         <StackPanel>
             <RelativePanel>
-                <TextBlock Text="Заявки" FontSize="30"/>
-                <Button Name="RefreshButton" Click="RefreshButton_Click" RelativePanel.AlignRightWithPanel="True" Height="40" Width="40" Margin="2">
+                <TextBlock Text="Заявки" FontSize="36" Margin="5"/>
+                <Button Name="RefreshButton" Click="RefreshButton_Click" RelativePanel.AlignRightWithPanel="True" Height="40" Width="40" Margin="5">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE149;" ToolTipService.ToolTip="Перезагрузить список"/>
                     </StackPanel>
                 </Button>
-                <Button Name="AddButton" Click="AddButton_Click" FontSize="14" Height="40" Width="120" Margin="2" RelativePanel.LeftOf="RefreshButton">
+                <Button Name="AddButton" Click="AddButton_Click" FontSize="18" Height="40" Width="150" Margin="5,5,0,0" RelativePanel.LeftOf="RefreshButton">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE109;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                        <TextBlock Text="&#xE109;" FontFamily="Segoe MDL2 Assets" FontSize="24"/>
                         <TextBlock Text="Добавить" Margin="10,0"/>
                     </StackPanel>
                 </Button>
+                <ComboBox SelectionChanged="FilterComboBox_SelectionChanged" Name="FilterComboBox" ItemsSource="{x:Bind statuses}" RelativePanel.LeftOf="ResetFilterButton" Width="220" FontSize="18" Margin="5" Height="40">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="data:RequestStatus">
+                            <TextBlock Text="{x:Bind Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Name="ResetFilterButton" Click="ResetFilterButton_Click" Height="40" Width="40" RelativePanel.LeftOf="Separator" Margin="0,5,5,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE777;" FontFamily="Segoe MDL2 Assets" FontSize="20" ToolTipService.ToolTip="Сбросить фильтр"/>
+                    </StackPanel>
+                </Button>
+                <TextBlock Name="Separator" FontFamily="Segoe UI Light" FontSize="30" RelativePanel.LeftOf="AddButton" Margin="5" Text="|"/>
             </RelativePanel>
             <GridView Name="RequestsGridView" ItemsSource="{x:Bind requests}" IsEnabled="True" IsItemClickEnabled="True" ItemClick="RequestsGridView_ItemClick">
                 <GridView.ItemTemplate>

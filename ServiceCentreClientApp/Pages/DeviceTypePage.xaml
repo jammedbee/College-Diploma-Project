@@ -6,16 +6,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="1280" Height="720" MinHeight="720" MaxHeight="1080" MaxWidth="1920" MinWidth="1280">
 
     <Grid>
-        <StackPanel>
-            <TextBox Name="TypeNameTextBox" Header="Название"/>
-            <StackPanel Orientation="Horizontal">
-                <Button Name="SaveButton" Content="save" Click="SaveButton_Click"/>
-                <Button Name="EditButton" Content="edit" Click="EditButton_Click"/>
-                <Button Name="CancelButton" Content="cancel" Click="CancelButton_Click"/>
-            </StackPanel>
+        <StackPanel Width="500" VerticalAlignment="Center">
+            <TextBox Name="TypeNameTextBox" Header="Название" FontSize="28"/>
+            <Grid Margin="2,5,2,5">
+                <Button Name="SaveButton" Click="SaveButton_Click" Width="245" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE10B;" FontSize="26"/>
+                        <TextBlock Text="Сохранить" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="EditButton" Click="EditButton_Click" Width="245" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE104;" FontSize="26"/>
+                        <TextBlock Text="Редактировать" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="Cancel" Click="CancelButton_Click" HorizontalAlignment="Right" Width="245">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE106;" FontSize="20"/>
+                        <TextBlock Text="Отмена" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>

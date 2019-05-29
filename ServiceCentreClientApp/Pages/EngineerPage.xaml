@@ -7,14 +7,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:ServiceCentreClientApp.Entities"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
-    <Grid>
-        <ProgressRing x:Name="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="150"/>
+    <Grid MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ProgressRing x:Name="ProgressProgressRing" HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="150"/>
         <StackPanel>
-            <StackPanel>
-                <Button Name="RefreshButton" Content="Refresh" Click="RefreshButton_Click"/>
-            </StackPanel>
+            <RelativePanel>
+                <TextBlock Text="Заявки на ремонт" FontSize="36"/>
+                <Button Name="RefreshButton" Click="RefreshButton_Click" RelativePanel.AlignRightWithPanel="True" Height="45" Width="45" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="24" Text="&#xE149;" ToolTipService.ToolTip="Перезагрузить список"/>
+                    </StackPanel>
+                </Button>
+            </RelativePanel>
             <GridView Name="RequestsGridView" ItemsSource="{x:Bind requests}" IsEnabled="True" IsItemClickEnabled="True" ItemClick="RequestsGridView_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate x:Name="RequestTemplate" x:DataType="data:RepairRequest">
