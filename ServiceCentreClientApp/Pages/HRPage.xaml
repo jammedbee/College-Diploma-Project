@@ -13,30 +13,41 @@
         <StackPanel>
             <RelativePanel>
                 <TextBlock Text="Сотрудники" FontSize="36" Margin="5"/>
-                <Button Name="RefreshButton" Click="RefreshButton_Click" RelativePanel.AlignRightWithPanel="True" Height="45" Width="45" Margin="5">
+                <Button Name="RefreshButton" Click="RefreshButton_Click" RelativePanel.AlignRightWithPanel="True" Height="40" Width="40" Margin="5">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="24" Text="&#xE149;" ToolTipService.ToolTip="Перезагрузить список"/>
+                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE149;" ToolTipService.ToolTip="Перезагрузить список"/>
                     </StackPanel>
                 </Button>
-                <Button Name="AddButton" Click="AddButton_Click" FontSize="20" Height="45" Width="150" Margin="0,5" RelativePanel.LeftOf="RefreshButton">
+                <Button Name="AddButton" Click="AddButton_Click" FontSize="20" Height="40" Width="150" Margin="0,5" RelativePanel.LeftOf="RefreshButton">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE109;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                         <TextBlock Text="Добавить" Margin="10,0"/>
                     </StackPanel>
                 </Button>
+                <ComboBox Name="PostsComboBox" SelectionChanged="PostsComboBox_SelectionChanged" RelativePanel.LeftOf="AddButton" Width="150" Height="40" Margin="5" ItemsSource="{x:Bind userTypes}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="data:UserType">
+                            <TextBlock Text="{x:Bind Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <SearchBox Name="SearchSearchBox" QuerySubmitted="SearchSearchBox_QuerySubmitted" RelativePanel.LeftOf="PostsComboBox" Margin="5" Height="40" Width="150"/>
             </RelativePanel>
-            <GridView Name="RequestsGridView" ItemsSource="{x:Bind users}" IsEnabled="True" IsItemClickEnabled="True" ItemClick="RequestsGridView_ItemClick">
+            <GridView Name="UsersGridView" ItemsSource="{x:Bind users}" IsEnabled="True" IsItemClickEnabled="True" ItemClick="UsersGridView_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate x:Name="RequestTemplate" x:DataType="data:User">
                         <StackPanel>
-                            <Ellipse Width="200" Height="200">
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{x:Bind Photo}"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <TextBlock Text="{x:Bind Id}" FontSize="16"/>
-                            <TextBlock Text="{x:Bind GetFullName}"/>
-                            <TextBlock Text="{x:Bind BirthDate.Date}"/>
+                            <StackPanel Margin="5">
+                                <Ellipse Width="200" Height="200">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{x:Bind Photo}"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <TextBlock Text="{x:Bind GetFullName}" FontSize="18"/>
+                                <TextBlock Text="{x:Bind GetBirthDate}" FontSize="18"/>
+                                <TextBlock Text="{x:Bind Email}" FontSize="16"/>
+                                <TextBlock Text="{x:Bind PhoneNumber}" FontSize="16"/>
+                            </StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>

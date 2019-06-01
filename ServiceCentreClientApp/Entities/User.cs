@@ -16,10 +16,15 @@ namespace ServiceCentreClientApp.Entities
         public BitmapImage Photo { get; set; }
         public DateTime BirthDate { get; set; }
         public int TypeId { get; set; }
+        public bool IsDeleted { get; set; }
 
         public string GetFullName { get
             {
                 return LastName + " " + FirstName + " " + Patronymic;
+            } }
+        public string GetBirthDate { get
+            {
+                return BirthDate.Day.ToString() + "/" + BirthDate.Month.ToString() + "/" + BirthDate.Year.ToString();
             } }
     }
 }

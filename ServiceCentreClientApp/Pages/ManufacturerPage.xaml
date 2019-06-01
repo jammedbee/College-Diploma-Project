@@ -9,13 +9,28 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel>
-            <TextBox Name="NameTextBox" Header="Название"/>
-            <StackPanel>
-                <Button Name="SaveButton" Click="SaveButton_Click" Content="Add"/>
-                <Button Name="EditButton" Click="EditButton_Click" Content="Edit"/>
-                <Button Name="CancelButton" Click="CancelButton_Click" Content="Cancel"/>
-            </StackPanel>
+        <StackPanel Width="500" VerticalAlignment="Center">
+            <TextBox Name="NameTextBox" Header="Название" FontSize="28"/>
+            <Grid Margin="2,5,2,5">
+                <Button Name="SaveButton" Click="SaveButton_Click" Width="245" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE10B;" FontSize="26"/>
+                        <TextBlock Text="Сохранить" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="EditButton" Click="EditButton_Click" Width="245" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE104;" FontSize="26"/>
+                        <TextBlock Text="Редактировать" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="Cancel" Click="CancelButton_Click" HorizontalAlignment="Right" Width="245">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE106;" FontSize="20"/>
+                        <TextBlock Text="Отмена" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>

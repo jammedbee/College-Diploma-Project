@@ -8,6 +8,7 @@ using ServiceCentreClientApp.Entities;
 using ServiceCentreClientApp.Parameters;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -28,19 +29,26 @@ namespace ServiceCentreClientApp.Pages
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            connection = (e.Parameter as DeviceParameter).Connection;
-            device = (e.Parameter as DeviceParameter).Device;
+            try
+            {
+                connection = (e.Parameter as DeviceParameter).Connection;
+                device = (e.Parameter as DeviceParameter).Device;
 
-            if (device == null)
-            {
-                EditButton.Visibility = Visibility.Collapsed;
+                if (device == null)
+                {
+                    EditButton.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    TypeNameTextBox.IsEnabled = false;
+                    SaveButton.Visibility = Visibility.Collapsed;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                TypeNameTextBox.IsEnabled = false;
-                SaveButton.Visibility = Visibility.Collapsed;
+                await new MessageDialog($"Произошла следующая ошибка: \"{ex.Message}\"", "Что-то пошло не так :(").ShowAsync();
             }
 
             base.OnNavigatedTo(e);
@@ -55,26 +63,33 @@ namespace ServiceCentreClientApp.Pages
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (connection.State != System.Data.ConnectionState.Open)
-                await connection.OpenAsync();
-
-            using (var command = connection.CreateCommand())
+            try
             {
-                if (device != null)
-                {
-                    command.CommandText = $"UPDATE DeviceType SET [Name]=N'@newName' WHERE [Id]=@id";
-                    command.Parameters.AddWithValue("@id", device.Id);
-                    command.Parameters.Add(new SqlParameter("@newName", TypeNameTextBox.Text));
-                }
-                else
-                {
-                    command.CommandText = "INSERT INTO DeviceType VALUES (@name)";
-                    command.Parameters.AddWithValue("@name", TypeNameTextBox.Text);
-                }
-                await command.ExecuteNonQueryAsync();
-            }
+                if (connection.State != System.Data.ConnectionState.Open)
+                    await connection.OpenAsync();
 
-            CancelButton_Click(sender, e);
+                using (var command = connection.CreateCommand())
+                {
+                    if (device != null)
+                    {
+                        command.CommandText = $"UPDATE DeviceType SET [Name]=N'@newName' WHERE [Id]=@id";
+                        command.Parameters.AddWithValue("@id", device.Id);
+                        command.Parameters.Add(new SqlParameter("@newName", TypeNameTextBox.Text));
+                    }
+                    else
+                    {
+                        command.CommandText = "INSERT INTO DeviceType VALUES (@name)";
+                        command.Parameters.AddWithValue("@name", TypeNameTextBox.Text);
+                    }
+                    await command.ExecuteNonQueryAsync();
+                }
+
+                CancelButton_Click(sender, e);
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog($"Произошла следующая ошибка: \"{ex.Message}\"", "Что-то пошло не так :(").ShowAsync();
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

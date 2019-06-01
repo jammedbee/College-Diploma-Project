@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ServiceCentreClientApp.Entities;
 using ServiceCentreClientApp.Parameters;
@@ -36,42 +37,56 @@ namespace ServiceCentreClientApp.Pages
 
         private async Task<ObservableCollection<RequestStatus>> GetStatusesAsync()
         {
-            if (connection.State != System.Data.ConnectionState.Open)
-                await connection.OpenAsync();
-
-            var retrievedStatuses = new ObservableCollection<RequestStatus>();
-            retrievedStatuses.Add(new RequestStatus { Id = 0, Name = "Не выбрано" });
-
-            using (var command = connection.CreateCommand())
+            try
             {
-                command.CommandText = "SELECT * FROM RequestStatus";
+                if (connection.State != System.Data.ConnectionState.Open)
+                    await connection.OpenAsync();
 
-                using (var reader = await command.ExecuteReaderAsync())
+                var retrievedStatuses = new ObservableCollection<RequestStatus>();
+                retrievedStatuses.Add(new RequestStatus { Id = 0, Name = "Не выбрано" });
+
+                using (var command = connection.CreateCommand())
                 {
-                    if (reader.HasRows)
+                    command.CommandText = "SELECT * FROM RequestStatus";
+
+                    using (var reader = await command.ExecuteReaderAsync())
                     {
-                        while (await reader.ReadAsync())
+                        if (reader.HasRows)
                         {
-                            retrievedStatuses.Add(new RequestStatus { Id = reader.GetInt32(0), Name = reader.GetString(1) });
+                            while (await reader.ReadAsync())
+                            {
+                                retrievedStatuses.Add(new RequestStatus { Id = reader.GetInt32(0), Name = reader.GetString(1) });
+                            }
                         }
                     }
                 }
-            }
 
-            connection.Close();
-            return retrievedStatuses;
+                connection.Close();
+                return retrievedStatuses;
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog($"Произошла следующая ошибка: \"{ex.Message}\"", "Что-то пошло не так :(").ShowAsync();
+                return null;
+            }
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            currentUser = e.Parameter as User;
+            try
+            {
+                currentUser = e.Parameter as User;
 
-            connection = new SqlConnection((App.Current as App).ConnectionString);
+                connection = new SqlConnection((App.Current as App).ConnectionString);
 
-            await GetRequestsAsync(currentUser);
-            statuses = await GetStatusesAsync();
-            FilterComboBox.ItemsSource = statuses;
-
+                await GetRequestsAsync(currentUser);
+                statuses = await GetStatusesAsync();
+                FilterComboBox.ItemsSource = statuses;
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog($"Произошла следующая ошибка: \"{ex.Message}\"", "Что-то пошло не так :(").ShowAsync();
+            }
             base.OnNavigatedTo(e);
         }
 
@@ -174,6 +189,15 @@ namespace ServiceCentreClientApp.Pages
                 var filteredRequest = requests.Where(r => r.StatusId == (FilterComboBox.SelectedItem as RequestStatus).Id);
                 RequestsGridView.ItemsSource = filteredRequest;
             }
+        }
+
+        private void SearchSearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
+        {
+            var regex = new Regex(args.QueryText);
+
+            var searched = requests.Where(r => regex.IsMatch(r.Id.ToString()) || regex.IsMatch(r.RegistrationDate.ToString()));
+
+            RequestsGridView.ItemsSource = searched;
         }
     }
 }

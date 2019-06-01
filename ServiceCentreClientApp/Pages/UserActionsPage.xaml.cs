@@ -7,8 +7,10 @@ using Microsoft.Toolkit.Uwp.UI.Extensions;
 using ServiceCentreClientApp.Entities;
 using ServiceCentreClientApp.Parameters;
 using ServiceCentreClientApp.Tools;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -26,6 +28,12 @@ namespace ServiceCentreClientApp.Pages
         {
             this.InitializeComponent();
             types = new ObservableCollection<UserType>();
+            BirthDatePicker.SelectedDate = null;
+            FirstNameTextBox.TextChanging += TextChanging;
+            LastNameTextBox.TextChanging += TextChanging;
+            PassportNumberTextBox.TextChanging += TextChanging;
+            PhoneNumberTextBox.TextChanging += TextChanging;
+            EmailTextBox.TextChanging += TextChanging;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -38,7 +46,7 @@ namespace ServiceCentreClientApp.Pages
             if (user != null)
             {
                 LoadUser(user);
-                
+
                 TypeComboBox.ItemsSource = types;
                 TypeComboBox.SelectedItem = types.FirstOrDefault(t => t.Id == user.TypeId);
                 ControlsInteraction.DisableControls(this);
@@ -157,9 +165,9 @@ namespace ServiceCentreClientApp.Pages
             }
         }
 
-        private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            await ConfirmationDialog.ShowAsync();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -185,7 +193,8 @@ namespace ServiceCentreClientApp.Pages
                     PassportNumber = PassportNumberTextBox.Text,
                     PhoneNumber = PhoneNumberTextBox.Text,
                     Email = EmailTextBox.Text,
-                    TypeId = (TypeComboBox.SelectedItem as UserType).Id
+                    TypeId = (TypeComboBox.SelectedItem as UserType).Id,
+                    IsDeleted = false
                 };
 
                 using (var command = connection.CreateCommand())
@@ -194,10 +203,10 @@ namespace ServiceCentreClientApp.Pages
                         $"BirthDate = '{editedUser.BirthDate.Date.Year.ToString() + "-" + editedUser.BirthDate.Date.Month.ToString() + "-" + editedUser.BirthDate.Date.Day.ToString()}', " +
                         $"FirstName = N'{editedUser.FirstName}', LastName = N'{editedUser.LastName}', Patronymic = N'{editedUser.Patronymic}', " +
                         $"PassportNumber = '{editedUser.PassportNumber}', PhoneNumber = '{editedUser.PhoneNumber}', Email = '{editedUser.Email}', " +
-                        $"TypeId = {editedUser.TypeId}, Photo = ";
+                        $"TypeId = {editedUser.TypeId}, IsDeleted = {Convert.ToInt32(editedUser.IsDeleted)} Photo = ";
 
                     var imageParameter = new SqlParameter("@photo", System.Data.SqlDbType.VarBinary);
-                    
+
                     imageParameter.Direction = System.Data.ParameterDirection.Input;
                     if (ByteImage != null)
                     {
@@ -253,40 +262,95 @@ namespace ServiceCentreClientApp.Pages
                     {
                         imageParameter.Size = ByteImage.Length;
                         imageParameter.Value = ByteImage;
-                        command.CommandText += $"@photo, {newUser.TypeId}, {account.Id})";
+                        command.CommandText += $"@photo, {newUser.TypeId}, {account.Id}, 0)";
                         command.Parameters.Add(imageParameter);
                     }
                     else
                     {
-                        command.CommandText += $"null, {newUser.TypeId}, {account.Id})";
+                        command.CommandText += $"null, {newUser.TypeId}, {account.Id}, 0)";
                     }
 
                     await command.ExecuteNonQueryAsync();
                 }
             }
+            connection.Close();
+            (Parent as Frame).GoBack();
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             ControlsInteraction.EnableControls(this);
-            
+
             SaveButton.Visibility = Visibility.Visible;
             EditButton.Visibility = Visibility.Collapsed;
         }
 
         private void EmailTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
         {
-            if (TextBoxRegex.GetIsValid(EmailTextBox))
+            if (TextBoxRegex.GetIsValid(EmailTextBox) || string.IsNullOrWhiteSpace(EmailTextBox.Text))
             {
-                // To-Do
+                EmailTextBox.BorderBrush = LastNameTextBox.BorderBrush;
             }
-
+            else
+            {
+                EmailTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Red);
+            }
         }
 
         private async void RefreshComboBoxButton_Click(object sender, RoutedEventArgs e)
         {
             await GetUserTypesAsync();
             TypeComboBox.ItemsSource = types;
+        }
+
+        private void FirstLetterToUpperOnLostFocus(object sender, RoutedEventArgs e)
+        {
+            string text = (sender as TextBox).Text.ToLower();
+            if (!string.IsNullOrWhiteSpace(text))
+                (sender as TextBox).Text = char.ToUpper(text[0]) + text.Substring(1);
+        }
+
+        private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            user.IsDeleted = true;
+            if (connection.State != System.Data.ConnectionState.Open)
+                await connection.OpenAsync();
+
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = $"UPDATE [User] SET IsDeleted=1 WHERE [User].[Id]={user.Id}";
+                await command.ExecuteNonQueryAsync();
+            }
+            connection.Close();
+            await new MessageDialog("Пользователь был успешно удалён.").ShowAsync();
+            (Parent as Frame).GoBack();
+        }
+
+        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            sender.Hide();
+        }
+
+        private void CheckInputs()
+        {
+            if (!string.IsNullOrWhiteSpace(FirstNameTextBox.Text) 
+                && !string.IsNullOrWhiteSpace(LastNameTextBox.Text) 
+                && !string.IsNullOrWhiteSpace(PassportNumberTextBox.Text) && TextBoxRegex.GetIsValid(PassportNumberTextBox)
+                && !string.IsNullOrWhiteSpace(EmailTextBox.Text) && TextBoxRegex.GetIsValid(EmailTextBox)
+                && !string.IsNullOrWhiteSpace(PhoneNumberTextBox.Text) && TextBoxRegex.GetIsValid(PhoneNumberTextBox)
+                && BirthDatePicker.SelectedDate != null)
+            {
+                SaveButton.IsEnabled = true;
+            }
+            else
+            {
+                SaveButton.IsEnabled = false;
+            }
+        }
+
+        private void TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+            CheckInputs();
         }
     }
 }

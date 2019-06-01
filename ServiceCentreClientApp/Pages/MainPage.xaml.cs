@@ -45,7 +45,8 @@ namespace ServiceCentreClientApp
                         {
                             (item as NavigationViewItem).Visibility = Windows.UI.Xaml.Visibility.Visible;
                         }
-                        mainFrame.Navigate(typeof(EngineerPage), user);
+                        menu.SelectedItem = DeveloperView;
+                        mainFrame.Navigate(typeof(DeveloperPage), connection);
                         break;
 
                     //case 2:
@@ -136,7 +137,7 @@ namespace ServiceCentreClientApp
 
         private void DeveloperView_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-
+            mainFrame.Navigate(typeof(DeveloperPage), connection);
         }
     }
 }

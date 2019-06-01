@@ -11,25 +11,25 @@
 
     <Grid>
         <StackPanel>
-            <StackPanel>
-                <TextBlock Text="Номер заявки"/>
-                <TextBlock Name="IdTextBlock"/>
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox Name="ClientComboBox" ItemsSource="{x:Bind clients}" Header="Клиент" Width="300">
+            <StackPanel Width="500" HorizontalAlignment="Center">
+                <TextBlock Text="Номер заявки" Width="500" FontSize="18" Margin="5"/>
+                <TextBlock Name="IdTextBlock" Width="500" FontSize="18" Margin="5"/>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <ComboBox Name="ClientComboBox" ItemsSource="{x:Bind clients}" FontSize="18" Header="Клиент" Width="450">
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="entities:User">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock>
-                                <Run Text="{x:Bind GetFullName}"/>
+                                        <Run Text="{x:Bind GetFullName}"/>
                                     </TextBlock>
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button Name="NewClient" Content="+" Click="NewClient_Click"/>
+                    <Button Name="NewClient" Content="+" VerticalAlignment="Bottom" Height="36" Width="36" Click="NewClient_Click"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox Name="DeviceComboBox" ItemsSource="{x:Bind devices}" Header="Устройтсво" Width="300">
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <ComboBox Name="DeviceComboBox" ItemsSource="{x:Bind devices}" FontSize="18" Header="Устройтсво" Width="450">
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="entities:Device">
                                 <StackPanel Orientation="Horizontal">
@@ -40,20 +40,20 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button Name="NewDevice" Content="+" Click="NewDevice_Click"/>
+                    <Button Name="NewDevice" Content="+" VerticalAlignment="Bottom" Height="36" Width="36" Click="NewDevice_Click"/>
                 </StackPanel>
-                <TextBlock Text="Дата оформления"/>
-                <TextBlock Name="RegistrationDate" Text="{x:Bind request.RegistrationDate}"/>
-                <TextBlock Text="Дата последнего обновления"/>
-                <TextBlock Name="UpdateDate" Text="{x:Bind request.UpdateDate}"/>
-                <ComboBox Name="ManagerComboBox" ItemsSource="{x:Bind managers}" Header="Ответственный менеджер" Width="300">
+                <TextBlock Text="Дата оформления" FontSize="18" Margin="5"/>
+                <TextBlock Name="RegistrationDate" Text="{x:Bind request.RegistrationDate}" FontSize="18" Margin="5"/>
+                <TextBlock Text="Дата последнего обновления" FontSize="18" Margin="5"/>
+                <TextBlock Name="UpdateDate" Text="{x:Bind request.UpdateDate}" FontSize="18" Margin="5"/>
+                <ComboBox Name="ManagerComboBox" ItemsSource="{x:Bind managers}" Header="Ответственный менеджер" FontSize="18" Margin="5" Width="450">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="entities:User">
                             <TextBlock Text="{x:Bind GetFullName}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Name="EngineerComboBox" ItemsSource="{x:Bind engineers}" Header="Ответственный инженер" Width="300">
+                <ComboBox Name="EngineerComboBox" ItemsSource="{x:Bind engineers}" FontSize="18" Margin="5" Header="Ответственный инженер" Width="450">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="entities:User">
                             <StackPanel Orientation="Horizontal">
@@ -64,7 +64,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Name="StatusComboBox" ItemsSource="{x:Bind statuses}" Header="Текущий статус" Width="300">
+                <ComboBox Name="StatusComboBox" ItemsSource="{x:Bind statuses}" Header="Текущий статус" Width="450" Margin="5">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="entities:RequestStatus">
                             <StackPanel Orientation="Horizontal">
@@ -73,16 +73,36 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <CheckBox Name="WarrantyCheckBox" Content="Гарантия"/>
-                <TextBlock Text="Стоимость"/>
-                <TextBox Name="PriceTextBox" Width="300" HorizontalAlignment="Left"/>
+                <CheckBox Name="WarrantyCheckBox" FontSize="18" Margin="5" Content="Гарантия"/>
+                <TextBlock Text="Стоимость" FontSize="18" Margin="5"/>
+                <TextBox Name="PriceTextBox" HorizontalAlignment="Left" FontSize="18" Width="500"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button Name="AddButton" Content="Add" Click="AddButton_Click"/>
-                <Button Name="SaveButton" Content="Save" Click="SaveButton_Click"/>
-                <Button Name="CancelButton" Content="Cancel" Click="CancelButton_Click"/>
-                <Button Name="EditButton" Content="Edit" Click="EditButton_Click"/>
-            </StackPanel>
+            <Grid Margin="2,20,2,5" HorizontalAlignment="Center" Width="500">
+                <Button Name="AddButton" Click="AddButton_Click" Width="245">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE10B;" FontSize="26"/>
+                        <TextBlock Text="Добавить" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="SaveButton" Click="SaveButton_Click" Width="245" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE10B;" FontSize="26"/>
+                        <TextBlock Text="Сохранить" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="EditButton" Click="EditButton_Click" Width="245" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE104;" FontSize="26"/>
+                        <TextBlock Text="Редактировать" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="CancelButton" Click="CancelButton_Click" HorizontalAlignment="Right" Width="245">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE106;" FontSize="20"/>
+                        <TextBlock Text="Отмена" FontSize="18" Margin="5,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
             <ProgressRing Name="Progress" Height="100" Width="100"/>
         </StackPanel>
     </Grid>

@@ -39,6 +39,7 @@
                     </StackPanel>
                 </Button>
                 <TextBlock Name="Separator" FontFamily="Segoe UI Light" FontSize="30" RelativePanel.LeftOf="AddButton" Margin="5" Text="|"/>
+                <SearchBox Name="SearchSearchBox" QuerySubmitted="SearchSearchBox_QuerySubmitted" RelativePanel.LeftOf="FilterComboBox" Margin="5" Height="40" Width="150"/>
             </RelativePanel>
             <GridView Name="RequestsGridView" ItemsSource="{x:Bind requests}" IsEnabled="True" IsItemClickEnabled="True" ItemClick="RequestsGridView_ItemClick">
                 <GridView.ItemTemplate>

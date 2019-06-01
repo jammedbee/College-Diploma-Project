@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography;
+using System.Text;
 using ServiceCentreClientApp.Parameters;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -80,7 +82,7 @@ namespace ServiceCentreClientApp.Pages
             {
                 Id = 0,
                 Login = Login.Text,
-                Password = Password.Password
+                Password = Encoding.Unicode.GetString(new SHA512Managed().ComputeHash(Encoding.Unicode.GetBytes(Password.Password)))
             }));
         }
 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using ServiceCentreClientApp.Entities;
 using ServiceCentreClientApp.Parameters;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -14,21 +16,37 @@ namespace ServiceCentreClientApp.Pages
     {
         SqlConnection connection;
         ObservableCollection<RepairRequest> requests;
-        User user;
+        User currentUser;
+
 
         public EngineerPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             requests = new ObservableCollection<RepairRequest>();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            user = e.Parameter as User;
+            try
+            {
+                currentUser = e.Parameter as User;
+                connection = new SqlConnection((App.Current as App).ConnectionString);
 
-            connection = new SqlConnection((App.Current as App).ConnectionString);
+                await GetRequestsAsync(currentUser);
 
-            await GetRequestsAsync(user);
+                if (RequestsGridView.ItemsSource == null)
+                {
+                    WellDoneTextBlock.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    WellDoneTextBlock.Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog($"Произошла следующая ошибка: \"{ex.Message}\"", "Что-то пошло не так :(").ShowAsync();
+            }
 
             base.OnNavigatedTo(e);
         }
@@ -86,6 +104,21 @@ namespace ServiceCentreClientApp.Pages
                                 Price = reader.GetDecimal(9)
                             });
                         }
+
+                        var reqs = requests.Where(r => r.StatusId != 4 && r.StatusId != 5);
+                        requests = new ObservableCollection<RepairRequest>(reqs);
+                        reqs = null;
+
+                        if (requests.Count == 0)
+                        {
+                            RequestsGridView.ItemsSource = null;
+
+                            await new MessageDialog("Не было найдено ни одной активной заявки на Ваше имя.").ShowAsync();
+                        }
+                        else
+                        {
+                            RequestsGridView.ItemsSource = requests;
+                        }
                     }
                     else
                     {
@@ -105,12 +138,12 @@ namespace ServiceCentreClientApp.Pages
         private void RequestsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             (Parent as Frame).Navigate(typeof(RepairRequestPage), new RepairRequestParameter(
-                e.ClickedItem as RepairRequest, user, connection));
+                e.ClickedItem as RepairRequest, currentUser, connection));
         }
 
-        private async void RefreshButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            await GetRequestsAsync(user);
+            await GetRequestsAsync(currentUser);
         }
     }
 }

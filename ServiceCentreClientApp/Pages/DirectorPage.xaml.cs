@@ -39,7 +39,7 @@ namespace ServiceCentreClientApp.Pages
 
         private void PersonnelViewButton_Click(object sender, RoutedEventArgs e)
         {
-
+            (Parent as Frame).Navigate(typeof(HRPage), currentUser);
         }
 
         private void RequestsViewButton_Click(object sender, RoutedEventArgs e)
