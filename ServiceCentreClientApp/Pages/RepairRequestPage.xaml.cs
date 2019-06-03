@@ -10,6 +10,11 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using ServiceCentreClientApp.Tools;
+using Windows.Storage;
+using Syncfusion.DocIO.DLS;
+using Syncfusion.DocIO;
+using System.IO;
+using Windows.UI.Popups;
 
 namespace ServiceCentreClientApp.Pages
 {
@@ -258,7 +263,6 @@ namespace ServiceCentreClientApp.Pages
             }
 
             connection.Close();
-            ControlsInteraction.EnableControls(this);
             (Parent as Frame).GoBack();
             Progress.IsActive = false;
         }
@@ -306,6 +310,11 @@ namespace ServiceCentreClientApp.Pages
             (Parent as Frame).Navigate(typeof(DevicePage), new DeviceParameter(null, connection));
         }
 
+        private void ExportRequestToWordButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             if (currentUser.TypeId == (int)UserType.UserTypeId.Engineer)
@@ -321,6 +330,48 @@ namespace ServiceCentreClientApp.Pages
             EditButton.Visibility = Visibility.Collapsed;
             SaveButton.Visibility = Visibility.Visible;
 
+        }
+
+        private async Task ExportToWord(DocumentType documentType)
+        {
+            switch (documentType)
+            {
+                case DocumentType.Request:
+                    using (var document = new WordDocument())
+                    {
+                        StorageFile file = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFileAsync(@"Assets\template.docx");
+
+                        await document.OpenAsync(file, FormatType.Docx);
+
+                        BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(document);
+                        bookmarkNavigator.MoveToBookmark("RequestId");
+                        bookmarkNavigator.InsertText(request.Id.ToString());
+                        bookmarkNavigator.MoveToBookmark("");
+                        bookmarkNavigator.InsertText("");
+                        bookmarkNavigator.MoveToBookmark("");
+                        bookmarkNavigator.InsertText("");
+                        bookmarkNavigator.MoveToBookmark("");
+                        bookmarkNavigator.InsertText("");
+                        bookmarkNavigator.MoveToBookmark("");
+                        bookmarkNavigator.InsertText("");
+                        bookmarkNavigator.MoveToBookmark("");
+                        bookmarkNavigator.InsertText("");
+                        bookmarkNavigator.MoveToBookmark("");
+                        bookmarkNavigator.InsertText("");
+                        MemoryStream stream = new MemoryStream();
+                        await document.SaveAsync(stream, FormatType.Docx);
+                        await WorkingWithFiles.SaveDocumentAsync(stream, $"Заявка №{request.Id}.docx");
+                    }
+                    break;
+                case DocumentType.Warranty:
+
+                    break;
+            }
+        }
+
+        private enum DocumentType : int
+        {
+            Request = 0, Warranty = 1 
         }
 
         private enum RequestAction : int

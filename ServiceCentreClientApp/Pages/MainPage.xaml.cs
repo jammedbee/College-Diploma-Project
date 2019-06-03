@@ -46,7 +46,7 @@ namespace ServiceCentreClientApp
                             (item as NavigationViewItem).Visibility = Windows.UI.Xaml.Visibility.Visible;
                         }
                         menu.SelectedItem = DeveloperView;
-                        mainFrame.Navigate(typeof(DeveloperPage), connection);
+                        mainFrame.Navigate(typeof(BlankPage), connection);
                         break;
 
                     //case 2:

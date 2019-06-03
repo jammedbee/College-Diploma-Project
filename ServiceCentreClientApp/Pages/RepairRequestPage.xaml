@@ -11,6 +11,12 @@
 
     <Grid>
         <StackPanel>
+            <Button Name="ExportRequestToWordButton" Click="ExportRequestToWordButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE74E;"/>
+                    <TextBlock Text="Сохранить на устройство" Margin="10,0"/>
+                </StackPanel>
+            </Button>
             <StackPanel Width="500" HorizontalAlignment="Center">
                 <TextBlock Text="Номер заявки" Width="500" FontSize="18" Margin="5"/>
                 <TextBlock Name="IdTextBlock" Width="500" FontSize="18" Margin="5"/>

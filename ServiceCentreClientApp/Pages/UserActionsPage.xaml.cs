@@ -28,12 +28,24 @@ namespace ServiceCentreClientApp.Pages
         {
             this.InitializeComponent();
             types = new ObservableCollection<UserType>();
-            BirthDatePicker.SelectedDate = null;
             FirstNameTextBox.TextChanging += TextChanging;
             LastNameTextBox.TextChanging += TextChanging;
             PassportNumberTextBox.TextChanging += TextChanging;
             PhoneNumberTextBox.TextChanging += TextChanging;
             EmailTextBox.TextChanging += TextChanging;
+            EmailTextBox.Loaded += EmailTextBox_Loaded;
+        }
+
+        private void EmailTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (TextBoxRegex.GetIsValid(EmailTextBox) || string.IsNullOrWhiteSpace(EmailTextBox.Text))
+            {
+                EmailTextBox.BorderBrush = LastNameTextBox.BorderBrush;
+            }
+            else
+            {
+                EmailTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Red);
+            }
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -203,7 +215,7 @@ namespace ServiceCentreClientApp.Pages
                         $"BirthDate = '{editedUser.BirthDate.Date.Year.ToString() + "-" + editedUser.BirthDate.Date.Month.ToString() + "-" + editedUser.BirthDate.Date.Day.ToString()}', " +
                         $"FirstName = N'{editedUser.FirstName}', LastName = N'{editedUser.LastName}', Patronymic = N'{editedUser.Patronymic}', " +
                         $"PassportNumber = '{editedUser.PassportNumber}', PhoneNumber = '{editedUser.PhoneNumber}', Email = '{editedUser.Email}', " +
-                        $"TypeId = {editedUser.TypeId}, IsDeleted = {Convert.ToInt32(editedUser.IsDeleted)} Photo = ";
+                        $"TypeId = {editedUser.TypeId}, IsDeleted = {Convert.ToInt32(editedUser.IsDeleted)}, Photo = ";
 
                     var imageParameter = new SqlParameter("@photo", System.Data.SqlDbType.VarBinary);
 
@@ -274,7 +286,7 @@ namespace ServiceCentreClientApp.Pages
                 }
             }
             connection.Close();
-            (Parent as Frame).GoBack();
+            await new MessageDialog("Данные были успешно сохранены.").ShowAsync();
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -335,10 +347,9 @@ namespace ServiceCentreClientApp.Pages
         {
             if (!string.IsNullOrWhiteSpace(FirstNameTextBox.Text) 
                 && !string.IsNullOrWhiteSpace(LastNameTextBox.Text) 
-                && !string.IsNullOrWhiteSpace(PassportNumberTextBox.Text) && TextBoxRegex.GetIsValid(PassportNumberTextBox)
-                && !string.IsNullOrWhiteSpace(EmailTextBox.Text) && TextBoxRegex.GetIsValid(EmailTextBox)
-                && !string.IsNullOrWhiteSpace(PhoneNumberTextBox.Text) && TextBoxRegex.GetIsValid(PhoneNumberTextBox)
-                && BirthDatePicker.SelectedDate != null)
+                && !string.IsNullOrWhiteSpace(PassportNumberTextBox.Text)
+                && !string.IsNullOrWhiteSpace(EmailTextBox.Text)
+                && !string.IsNullOrWhiteSpace(PhoneNumberTextBox.Text))
             {
                 SaveButton.IsEnabled = true;
             }
