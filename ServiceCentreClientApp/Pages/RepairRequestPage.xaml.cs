@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ServiceCentreClientApp.Entities;
+using ServiceCentreClientApp.Parameters;
+using ServiceCentreClientApp.Tools;
+using Syncfusion.DocIO;
+using Syncfusion.DocIO.DLS;
+using System;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ServiceCentreClientApp.Entities;
-using ServiceCentreClientApp.Parameters;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using ServiceCentreClientApp.Tools;
-using Windows.Storage;
-using Syncfusion.DocIO.DLS;
-using Syncfusion.DocIO;
-using System.IO;
-using Windows.UI.Popups;
 
 namespace ServiceCentreClientApp.Pages
 {
@@ -44,7 +42,11 @@ namespace ServiceCentreClientApp.Pages
             {
                 request = (e.Parameter as RepairRequestParameter).Request;
             }
-
+            else
+            {
+                ExportFinalRequestToWordButton.IsEnabled = false;
+                ExportRequestToWordButton.IsEnabled = false;
+            }
             currentUser = (e.Parameter as RepairRequestParameter).CurrentUser;
 
             if ((currentUser.TypeId == (int)UserType.UserTypeId.Director)
@@ -334,6 +336,9 @@ namespace ServiceCentreClientApp.Pages
 
         private async Task ExportToWord(DocumentType documentType)
         {
+            if (connection.State != System.Data.ConnectionState.Open)
+                await connection.OpenAsync();
+
             switch (documentType)
             {
                 case DocumentType.Request:
@@ -364,9 +369,69 @@ namespace ServiceCentreClientApp.Pages
                     }
                     break;
                 case DocumentType.Warranty:
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText =
+                            $"SELECT RepairRequest.Id,Client.LastName + ' ' + Client.FirstName + ' ' + Client.Patronymic AS 'Клиент'," +
+                            $"Manager.LastName + ' ' + Manager.FirstName + ' ' + Manager.Patronymic AS 'Менеджер'," +
+                            $"Engineer.LastName + ' ' + Engineer.FirstName + ' ' + Engineer.Patronymic AS 'Инженер'," +
+                            $"Manufacturer.Name + ' ' + Device.Model + '(' + Device.SerialNumber + ')' AS 'Устройство'," +
+                            $"RepairRequest.Price " +
+                            $"FROM RepairRequest " +
+                            $"LEFT JOIN[User] AS Client on RepairRequest.ClientId = Client.Id " +
+                            $"LEFT JOIN[Device] on RepairRequest.DeviceId = Device.Id " +
+                            $"LEFT JOIN Manufacturer on Device.ManufacturerId = Manufacturer.Id " +
+                            $"LEFT JOIN[User] AS Manager on RepairRequest.ManagerId = [Manager].[Id] " +
+                            $"LEFT JOIN[User] AS Engineer on RepairRequest.EngineerId = Engineer.Id " +
+                            $"WHERE RepairRequest.Id = {request.Id}";
 
-                    break;
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            if (reader.HasRows)
+                                await reader.ReadAsync();
+
+                            var info = new
+                            {
+                                Id = reader.GetInt32(0),
+                                Manager = reader.GetString(1),
+                                Engineer = reader.GetString(2),
+                                Client = reader.GetString(3),
+                                Device = reader.GetString(4),
+                                Price = reader.GetDecimal(5)
+                            };
+
+                            using (var document = new WordDocument())
+                            {
+                                StorageFile file = 
+                                    await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFileAsync(@"Assets\finalTemplate.docx");
+
+                                await document.OpenAsync(file, FormatType.Docx);
+
+                                BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(document);
+                                bookmarkNavigator.MoveToBookmark("RequestNumber");
+                                bookmarkNavigator.InsertText(request.Id.ToString());
+                                bookmarkNavigator.MoveToBookmark("Device");
+                                bookmarkNavigator.InsertText(info.Device);
+                                bookmarkNavigator.MoveToBookmark("Client");
+                                bookmarkNavigator.InsertText(info.Client);
+                                bookmarkNavigator.MoveToBookmark("Manager");
+                                bookmarkNavigator.InsertText(info.Manager);
+                                bookmarkNavigator.MoveToBookmark("Price");
+                                bookmarkNavigator.InsertText(info.Price.ToString());
+
+                                MemoryStream stream = new MemoryStream();
+                                await document.SaveAsync(stream, FormatType.Docx);
+                                await WorkingWithFiles.SaveDocumentAsync(stream, $"Заявка №{request.Id}.docx");
+                            }
+                        }
+                        break;
+                    }
             }
+        }
+
+        private void ExportFinalRequestToWordButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private enum DocumentType : int

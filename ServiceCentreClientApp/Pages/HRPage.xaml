@@ -12,7 +12,7 @@
         <ProgressRing x:Name="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="150"/>
         <StackPanel>
             <RelativePanel>
-                <TextBlock Text="Сотрудники" FontSize="36" Margin="5"/>
+                <TextBlock Text="Люди" FontSize="36" Margin="5"/>
                 <Button Name="RefreshButton" Click="RefreshButton_Click" RelativePanel.AlignRightWithPanel="True" Height="40" Width="40" Margin="5">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE149;" ToolTipService.ToolTip="Перезагрузить список"/>

@@ -12,7 +12,7 @@
         <NavigationView VerticalAlignment="Stretch" Name="menu" IsPaneOpen="False" PaneTitle="Меню" FontSize="18" PaneDisplayMode="LeftCompact" ItemInvoked="Menu_ItemInvoked" BackRequested="Menu_BackRequested">
             <NavigationView.MenuItems>
                 <NavigationViewItem Name="DirectorView" Tapped="DirectorView_Tapped" FontSize="18" Content="Общая информация" Icon="Home" Visibility="Collapsed"/>
-                <NavigationViewItem Name="HRView" Tapped="HRView_Tapped" Content="Сотрудники" FontSize="18" Icon="People" Visibility="Collapsed"/>
+                <NavigationViewItem Name="HRView" Tapped="HRView_Tapped" Content="Люди" FontSize="18" Icon="People" Visibility="Collapsed"/>
                 <NavigationViewItem Name="ManagerView" Tapped="ManagerView_Tapped" Content="Заявки" FontSize="18" Icon="Page2" Visibility="Collapsed"/>
                 <NavigationViewItem Name="EngineerView" Tapped="EngineerView_Tapped" Content="Заявки" FontSize="18" Icon="Page" Visibility="Collapsed"/>
                 <NavigationViewItem Name="DeveloperView" Tapped="DeveloperView_Tapped" Content="Для разработчика" FontSize="18" Icon="Repair" Visibility="Collapsed"/>

@@ -11,6 +11,7 @@ namespace ServiceCentreClientApp.Pages
 {
     public sealed partial class LoginPage : Page
     {
+        User currentUser;
         SqlConnection connection;
 
         public LoginPage()
@@ -79,13 +80,15 @@ namespace ServiceCentreClientApp.Pages
                             user.TypeId = Convert.ToInt32(command.Parameters["@typeId"].Value);
                             user.Photo = new Windows.UI.Xaml.Media.Imaging.BitmapImage();
                             user.Id = Convert.ToInt32(command.Parameters["@id"].Value);
+
+                            currentUser = user;
                         }
                     }
 
                 }
                 connection.Close();
                 ControlsInteraction.EnableControls(this);
-                (Parent as Frame).Navigate(typeof(MainPage), user);
+                (Parent as Frame).Navigate(typeof(MainPage), currentUser);
             }
             catch (Exception ex)
             {

@@ -197,6 +197,9 @@
     <Content Include="Assets\template.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\finalTemplate.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="ServiceCentreClientApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
