@@ -16,6 +16,8 @@ namespace ServiceCentreClientApp.Pages
 
         public LoginPage()
         {
+            Theme = ApplicationTheme.Light;
+
             this.InitializeComponent();
         }
 
