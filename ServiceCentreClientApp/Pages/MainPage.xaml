@@ -1,9 +1,8 @@
 ﻿<Page
     x:Class="ServiceCentreClientApp.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ServiceCentreClientApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="720" MaxHeight="1440" MaxWidth="2560" MinWidth="1280">
@@ -20,9 +19,9 @@
             <NavigationView.PaneFooter>
                 <NavigationViewItem Name="CurrentUser" Content="{x:Bind currentUser.GetFullName}" Icon="Contact" Tapped="CurrentUser_Tapped">
                     <NavigationViewItem.ContextFlyout>
-                        <MenuFlyout x:Name="CurrentUserActions" Placement="TopEdgeAlignedRight">
-                            <MenuFlyoutItem Text="Профиль" Tapped="MenuFlyoutItem_Tapped"/>
-                            <MenuFlyoutItem Text="Выйти" Tapped="MenuFlyoutItem_Tapped_1"/>
+                        <MenuFlyout x:Name="CurrentUserActions">
+                            <MenuFlyoutItem Name="ViewProfileItem" Text="Профиль" Tapped="ViewProfileItem_Tapped"/>
+                            <MenuFlyoutItem Name="LogOutItem" Text="Выйти" Tapped="LogOutItem_Tapped"/>
                         </MenuFlyout>
                     </NavigationViewItem.ContextFlyout>
                 </NavigationViewItem>

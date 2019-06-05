@@ -312,9 +312,9 @@ namespace ServiceCentreClientApp.Pages
             (Parent as Frame).Navigate(typeof(DevicePage), new DeviceParameter(null, connection));
         }
 
-        private void ExportRequestToWordButton_Click(object sender, RoutedEventArgs e)
+        private async void ExportRequestToWordButton_Click(object sender, RoutedEventArgs e)
         {
-
+            await ExportToWord(DocumentType.Request);
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -342,37 +342,85 @@ namespace ServiceCentreClientApp.Pages
             switch (documentType)
             {
                 case DocumentType.Request:
-                    using (var document = new WordDocument())
+                    using (var command = connection.CreateCommand())
                     {
-                        StorageFile file = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFileAsync(@"Assets\template.docx");
+                        command.CommandText = $"SELECT RepairRequest.Id " +
+                            $",Client.LastName + ' ' + Client.FirstName + ' ' + Client.Patronymic" +
+                            $",Client.PassportNumber" +
+                            $",Client.PhoneNumber" +
+                            $",Manufacturer.Name" +
+                            $",Device.Model" +
+                            $",Device.SerialNumber" +
+                            $",DeviceType.Name" +
+                            $",Device.ProblemDescription" +
+                            $",Device.IsUnderWarranty" +
+                            $",RepairRequest.Price" +
+                            $",RepairRequest.RegistrationDate" +
+                            $",Manager.LastName + ' ' + Manager.FirstName + ' ' + Manager.Patronymic " +
+                            $"FROM RepairRequest " +
+                            $"LEFT JOIN [User] AS Client on RepairRequest.ClientId = Client.Id " +
+                            $"LEFT JOIN [Device] on RepairRequest.DeviceId = Device.Id " +
+                            $"LEFT JOIN Manufacturer on Device.ManufacturerId = Manufacturer.Id " +
+                            $"LEFT JOIN [User] AS Manager on RepairRequest.ManagerId = [Manager].[Id] " +
+                            $"LEFT JOIN [DeviceType] on Device.TypeId = DeviceType.Id " +
+                            $"WHERE RepairRequest.Id = {request.Id}";
 
-                        await document.OpenAsync(file, FormatType.Docx);
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            if (reader.HasRows)
+                                await reader.ReadAsync();
 
-                        BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(document);
-                        bookmarkNavigator.MoveToBookmark("RequestId");
-                        bookmarkNavigator.InsertText(request.Id.ToString());
-                        bookmarkNavigator.MoveToBookmark("");
-                        bookmarkNavigator.InsertText("");
-                        bookmarkNavigator.MoveToBookmark("");
-                        bookmarkNavigator.InsertText("");
-                        bookmarkNavigator.MoveToBookmark("");
-                        bookmarkNavigator.InsertText("");
-                        bookmarkNavigator.MoveToBookmark("");
-                        bookmarkNavigator.InsertText("");
-                        bookmarkNavigator.MoveToBookmark("");
-                        bookmarkNavigator.InsertText("");
-                        bookmarkNavigator.MoveToBookmark("");
-                        bookmarkNavigator.InsertText("");
-                        MemoryStream stream = new MemoryStream();
-                        await document.SaveAsync(stream, FormatType.Docx);
-                        await WorkingWithFiles.SaveDocumentAsync(stream, $"Заявка №{request.Id}.docx");
+                            using (var document = new WordDocument())
+                            {
+                                StorageFile file = 
+                                    await Windows.ApplicationModel
+                                    .Package.Current.InstalledLocation
+                                    .GetFileAsync(@"Assets\template.docx");
+
+                                await document.OpenAsync(file, FormatType.Docx);
+
+                                BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(document);
+
+                                bookmarkNavigator.MoveToBookmark("RequestId");
+                                bookmarkNavigator.InsertText(request.Id.ToString());
+                                bookmarkNavigator.MoveToBookmark("ClientFullName");
+                                bookmarkNavigator.InsertText(reader.GetString(1));
+                                bookmarkNavigator.MoveToBookmark("PassportNumber");
+                                bookmarkNavigator.InsertText(reader.GetString(2));
+                                bookmarkNavigator.MoveToBookmark("PhoneNumber");
+                                bookmarkNavigator.InsertText(reader.GetString(3));
+                                bookmarkNavigator.MoveToBookmark("Manufacturer");
+                                bookmarkNavigator.InsertText(reader.GetString(4));
+                                bookmarkNavigator.MoveToBookmark("Model");
+                                bookmarkNavigator.InsertText(reader.GetString(5));
+                                bookmarkNavigator.MoveToBookmark("SerialNumber");
+                                bookmarkNavigator.InsertText(reader.GetString(6));
+                                bookmarkNavigator.MoveToBookmark("Type");
+                                bookmarkNavigator.InsertText(reader.GetString(7));
+                                bookmarkNavigator.MoveToBookmark("Problem");
+                                bookmarkNavigator.InsertText(reader.GetString(8));
+                                bookmarkNavigator.MoveToBookmark("Warranty");
+                                bookmarkNavigator.InsertText(reader.GetBoolean(9) == true ? "Да" : "Нет");
+                                bookmarkNavigator.MoveToBookmark("Price");
+                                bookmarkNavigator.InsertText(reader.GetDecimal(10).ToString());
+                                bookmarkNavigator.MoveToBookmark("Date");
+                                bookmarkNavigator.InsertText(reader.GetDateTime(11).ToShortDateString());
+                                bookmarkNavigator.MoveToBookmark("Manager");
+                                bookmarkNavigator.InsertText(reader.GetString(12));
+
+                                MemoryStream stream = new MemoryStream();
+                                await document.SaveAsync(stream, FormatType.Docx);
+                                await WorkingWithFiles.SaveDocumentAsync(stream, $"Заявка №{request.Id} - принятие.docx");
+                            }
+                        }
                     }
                     break;
                 case DocumentType.Warranty:
                     using (var command = connection.CreateCommand())
                     {
                         command.CommandText =
-                            $"SELECT RepairRequest.Id,Client.LastName + ' ' + Client.FirstName + ' ' + Client.Patronymic AS 'Клиент'," +
+                            $"SELECT RepairRequest.Id," +
+                            $"Client.LastName + ' ' + Client.FirstName + ' ' + Client.Patronymic AS 'Клиент'," +
                             $"Manager.LastName + ' ' + Manager.FirstName + ' ' + Manager.Patronymic AS 'Менеджер'," +
                             $"Engineer.LastName + ' ' + Engineer.FirstName + ' ' + Engineer.Patronymic AS 'Инженер'," +
                             $"Manufacturer.Name + ' ' + Device.Model + '(' + Device.SerialNumber + ')' AS 'Устройство'," +
@@ -392,10 +440,10 @@ namespace ServiceCentreClientApp.Pages
 
                             var info = new
                             {
-                                Id = reader.GetInt32(0),
-                                Manager = reader.GetString(1),
-                                Engineer = reader.GetString(2),
-                                Client = reader.GetString(3),
+                                Id = reader.GetInt64(0),
+                                Manager = reader.GetString(2),
+                                Engineer = reader.GetString(3),
+                                Client = reader.GetString(1),
                                 Device = reader.GetString(4),
                                 Price = reader.GetDecimal(5)
                             };
@@ -417,7 +465,7 @@ namespace ServiceCentreClientApp.Pages
                                 bookmarkNavigator.MoveToBookmark("Manager");
                                 bookmarkNavigator.InsertText(info.Manager);
                                 bookmarkNavigator.MoveToBookmark("Price");
-                                bookmarkNavigator.InsertText(info.Price.ToString());
+                                bookmarkNavigator.InsertText(info.Price.ToString() + " рублей");
 
                                 MemoryStream stream = new MemoryStream();
                                 await document.SaveAsync(stream, FormatType.Docx);
@@ -429,9 +477,9 @@ namespace ServiceCentreClientApp.Pages
             }
         }
 
-        private void ExportFinalRequestToWordButton_Click(object sender, RoutedEventArgs e)
+        private async void ExportFinalRequestToWordButton_Click(object sender, RoutedEventArgs e)
         {
-
+            await ExportToWord(DocumentType.Warranty);
         }
 
         private enum DocumentType : int
