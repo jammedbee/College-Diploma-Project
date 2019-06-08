@@ -299,12 +299,11 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
       <Version>5.1.1</Version>
     </PackageReference>
-    <PackageReference Include="Syncfusion.DocIO.UWP">
-      <Version>17.1.0.49</Version>
-    </PackageReference>
-    <PackageReference Include="Syncfusion.Pdf.UWP">
-      <Version>17.1.0.49</Version>
-    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Syncfusion Controls for UWP XAML, Version=17.1.0.38">
+      <Name>Syncfusion Controls for UWP XAML</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

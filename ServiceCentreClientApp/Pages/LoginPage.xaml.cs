@@ -16,8 +16,6 @@ namespace ServiceCentreClientApp.Pages
 
         public LoginPage()
         {
-            Theme = ApplicationTheme.Light;
-
             this.InitializeComponent();
         }
 
@@ -45,10 +43,16 @@ namespace ServiceCentreClientApp.Pages
                         command.Connection = connection;
                         command.CommandText = "usp_Autorization";
                         command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.Parameters.Add(new SqlParameter("@login", loginTextBox.Text));
-                        command.Parameters.Add(new SqlParameter("@password", passwordPasswordBox.Password));
-                        command.Parameters.Add(new SqlParameter("@accountId", -1)).Direction = System.Data.ParameterDirection.Output;
-                        command.Parameters.Add(new SqlParameter("@success", 0)).Direction = System.Data.ParameterDirection.Output;
+                        command.Parameters.Add(
+                            new SqlParameter("@login", loginTextBox.Text));
+                        command.Parameters.Add(
+                            new SqlParameter("@password", passwordPasswordBox.Password));
+                        command.Parameters.Add(
+                            new SqlParameter("@accountId", -1))
+                            .Direction = System.Data.ParameterDirection.Output;
+                        command.Parameters.Add(
+                            new SqlParameter("@success", 0))
+                            .Direction = System.Data.ParameterDirection.Output;
 
                         await command.ExecuteNonQueryAsync();
 
@@ -58,17 +62,38 @@ namespace ServiceCentreClientApp.Pages
 
                             command.Parameters.Clear();
                             command.CommandText = "usp_GetUser";
-                            command.Parameters.Add(new SqlParameter("@accountId", user.AccountId));
-                            command.Parameters.Add(new SqlParameter("@id", System.Data.SqlDbType.Int)).Direction = System.Data.ParameterDirection.Output;
-                            command.Parameters.Add(new SqlParameter("@firstName", System.Data.SqlDbType.NVarChar, 60)).Direction = System.Data.ParameterDirection.Output;
-                            command.Parameters.Add(new SqlParameter("@lastName", System.Data.SqlDbType.NVarChar, 60)).Direction = System.Data.ParameterDirection.Output;
-                            command.Parameters.Add(new SqlParameter("@patronymic", System.Data.SqlDbType.NVarChar, 60)).Direction = System.Data.ParameterDirection.Output;
-                            command.Parameters.Add(new SqlParameter("@birthDate", System.Data.SqlDbType.DateTime2)).Direction = System.Data.ParameterDirection.Output;
-                            command.Parameters.Add(new SqlParameter("@passportNumber", System.Data.SqlDbType.NVarChar, 60)).Direction = System.Data.ParameterDirection.Output;
-                            command.Parameters.Add(new SqlParameter("@email", System.Data.SqlDbType.NVarChar, 512)).Direction = System.Data.ParameterDirection.Output;
-                            command.Parameters.Add(new SqlParameter("@phoneNumber", System.Data.SqlDbType.NVarChar, 30)).Direction = System.Data.ParameterDirection.Output;
-                            command.Parameters.Add(new SqlParameter("@typeId", System.Data.SqlDbType.Int)).Direction = System.Data.ParameterDirection.Output;
-                            command.Parameters.Add(new SqlParameter("@photo", System.Data.SqlDbType.VarBinary, -1)).Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(
+                                new SqlParameter("@accountId", user.AccountId));
+                            command.Parameters.Add(
+                                new SqlParameter("@id", System.Data.SqlDbType.Int))
+                                .Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(
+                                new SqlParameter("@firstName", System.Data.SqlDbType.NVarChar, 60))
+                                .Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(
+                                new SqlParameter("@lastName", System.Data.SqlDbType.NVarChar, 60))
+                                .Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(
+                                new SqlParameter("@patronymic", System.Data.SqlDbType.NVarChar, 60))
+                                .Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(
+                                new SqlParameter("@birthDate", System.Data.SqlDbType.DateTime2))
+                                .Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(
+                                new SqlParameter("@passportNumber", System.Data.SqlDbType.NVarChar, 60))
+                                .Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(
+                                new SqlParameter("@email", System.Data.SqlDbType.NVarChar, 512))
+                                .Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(
+                                new SqlParameter("@phoneNumber", System.Data.SqlDbType.NVarChar, 30))
+                                .Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(
+                                new SqlParameter("@typeId", System.Data.SqlDbType.Int))
+                                .Direction = System.Data.ParameterDirection.Output;
+                            command.Parameters.Add(
+                                new SqlParameter("@photo", System.Data.SqlDbType.VarBinary, -1))
+                                .Direction = System.Data.ParameterDirection.Output;
 
                             await command.ExecuteNonQueryAsync();
 
@@ -94,7 +119,8 @@ namespace ServiceCentreClientApp.Pages
             }
             catch (Exception ex)
             {
-                await new MessageDialog($"Произошла следующая ошибка: \"{ex.Message}\"", "Что-то пошло не так :(").ShowAsync();
+                await new MessageDialog($"Произошла следующая ошибка: \"{ex.Message}\"", "Что-то пошло не так :(")
+                    .ShowAsync();
             }
             Progress.IsActive = false;
         }

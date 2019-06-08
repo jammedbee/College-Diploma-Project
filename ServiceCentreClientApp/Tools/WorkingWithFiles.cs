@@ -25,7 +25,7 @@ namespace ServiceCentreClientApp.Tools
             }
             else
             {
-                StorageFolder local = Windows.Storage.ApplicationData.Current.LocalFolder;
+                StorageFolder local = ApplicationData.Current.LocalFolder;
                 stFile = await local.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             }
             if (stFile != null)
