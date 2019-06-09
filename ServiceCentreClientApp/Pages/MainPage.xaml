@@ -20,8 +20,8 @@
                 <NavigationViewItem Name="CurrentUser" Content="{x:Bind currentUser.GetFullName}" Icon="Contact" Tapped="CurrentUser_Tapped">
                     <NavigationViewItem.ContextFlyout>
                         <MenuFlyout x:Name="CurrentUserActions">
-                            <MenuFlyoutItem Name="ViewProfileItem" Text="Профиль" Tapped="ViewProfileItem_Tapped"/>
-                            <MenuFlyoutItem Name="LogOutItem" Text="Выйти" Tapped="LogOutItem_Tapped"/>
+                            <MenuFlyoutItem Name="ViewProfileItem" Text="Профиль" Tapped="ViewProfileItem_Tapped" Width="300"/>
+                            <MenuFlyoutItem Name="LogOutItem" Text="Выйти" Tapped="LogOutItem_Tapped" Width="300"/>
                         </MenuFlyout>
                     </NavigationViewItem.ContextFlyout>
                 </NavigationViewItem>

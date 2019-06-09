@@ -213,9 +213,14 @@ namespace ServiceCentreClientApp.Pages
                 {
                     command.CommandText = $"UPDATE [dbo].[User] SET " +
                         $"BirthDate = '{editedUser.BirthDate.Date.Year.ToString() + "-" + editedUser.BirthDate.Date.Month.ToString() + "-" + editedUser.BirthDate.Date.Day.ToString()}', " +
-                        $"FirstName = N'{editedUser.FirstName}', LastName = N'{editedUser.LastName}', Patronymic = N'{editedUser.Patronymic}', " +
-                        $"PassportNumber = '{editedUser.PassportNumber}', PhoneNumber = '{editedUser.PhoneNumber}', Email = '{editedUser.Email}', " +
-                        $"TypeId = {editedUser.TypeId}, IsDeleted = {Convert.ToInt32(editedUser.IsDeleted)}, Photo = ";
+                        $"FirstName = N'{editedUser.FirstName}', " +
+                        $"LastName = N'{editedUser.LastName}', " +
+                        $"Patronymic = N'{editedUser.Patronymic}', " +
+                        $"PassportNumber = '{editedUser.PassportNumber}', " +
+                        $"PhoneNumber = '{editedUser.PhoneNumber}', " +
+                        $"Email = '{editedUser.Email}', " +
+                        $"TypeId = {editedUser.TypeId}, " +
+                        $"IsDeleted = {Convert.ToInt32(editedUser.IsDeleted)}, Photo = ";
 
                     var imageParameter = new SqlParameter("@photo", System.Data.SqlDbType.VarBinary);
 

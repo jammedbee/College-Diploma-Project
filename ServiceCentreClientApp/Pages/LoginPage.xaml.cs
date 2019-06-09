@@ -110,11 +110,15 @@ namespace ServiceCentreClientApp.Pages
 
                             currentUser = user;
                         }
+                        else
+                        {
+                            ControlsInteraction.EnableControls(this);
+                            throw new Exception("Ошибка авторизации. Проверьте правильность введённых данных и попробуйте снова.");
+                        }
                     }
 
                 }
                 connection.Close();
-                ControlsInteraction.EnableControls(this);
                 (Parent as Frame).Navigate(typeof(MainPage), currentUser);
             }
             catch (Exception ex)

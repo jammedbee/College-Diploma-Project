@@ -10,13 +10,13 @@
 
     <Grid>
         <StackPanel>
-            <Button Name="ExportRequestToWordButton" Click="ExportRequestToWordButton_Click">
+            <Button Name="ExportRequestToWordButton" Click="ExportRequestToWordButton_Click" Width="300" Margin="0,5,5,0" HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE160;"/>
                     <TextBlock Text="Документ о принятии" Margin="10,0"/>
                 </StackPanel>
             </Button>
-            <Button Name="ExportFinalRequestToWordButton" Click="ExportFinalRequestToWordButton_Click">
+            <Button Name="ExportFinalRequestToWordButton" Click="ExportFinalRequestToWordButton_Click" Width="300" Margin="5" HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE160;"/>
                     <TextBlock Text="Документ о завершении работы" Margin="10,0"/>

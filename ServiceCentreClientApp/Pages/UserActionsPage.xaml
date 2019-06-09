@@ -47,7 +47,15 @@
                 </Button.Flyout>
             </Button>
         </RelativePanel>
-        <ContentDialog Name="ConfirmationDialog" Title="Вы действительно хотите удалить этого пользователя? Это действие необратимо." DefaultButton="Primary" PrimaryButtonClick="ContentDialog_PrimaryButtonClick" PrimaryButtonText="Да" SecondaryButtonClick="ContentDialog_SecondaryButtonClick"  SecondaryButtonText="Нет" CloseButtonClick="ContentDialog_SecondaryButtonClick" CloseButtonText="Отмена">
+        <ContentDialog Name="ConfirmationDialog" 
+            Title="Вы действительно хотите удалить этого пользователя? Это действие необратимо." 
+            DefaultButton="Primary" 
+            PrimaryButtonClick="ContentDialog_PrimaryButtonClick" 
+            PrimaryButtonText="Да" 
+            SecondaryButtonClick="ContentDialog_SecondaryButtonClick"  
+            SecondaryButtonText="Нет" 
+            CloseButtonClick="ContentDialog_SecondaryButtonClick" 
+            CloseButtonText="Отмена">
             
         </ContentDialog>
         <Grid Grid.Row="1">
