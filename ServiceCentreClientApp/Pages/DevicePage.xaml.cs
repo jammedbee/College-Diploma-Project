@@ -24,6 +24,28 @@ namespace ServiceCentreClientApp.Pages
             this.InitializeComponent();
             manufacturers = new ObservableCollection<Manufacturer>();
             deviceTypes = new ObservableCollection<DeviceType>();
+            SaveButton.IsEnabled = false;
+            ModelTextBox.TextChanging += TextBox_TextChanging;
+            SerialNumberTextBox.TextChanging += TextBox_TextChanging;
+            ManufacturerComboBox.SelectionChanged += ComboBox_SelectionChanged;
+            ManufacturerComboBox.Loaded += ComboBox_Loaded;
+            TypeComboBox.Loaded += ComboBox_Loaded;
+            TypeComboBox.SelectionChanged += ComboBox_SelectionChanged;
+        }
+
+        private void ComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            SaveButton.IsEnabled = CheckInputs();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SaveButton.IsEnabled = CheckInputs();
+        }
+
+        private void TextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+            SaveButton.IsEnabled = CheckInputs();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -185,6 +207,21 @@ namespace ServiceCentreClientApp.Pages
         private void NewManufacturerButton_Click(object sender, RoutedEventArgs e)
         {
             (Parent as Frame).Navigate(typeof(ManufacturerPage), new ManufacturerParameter(null, connection));
+        }
+
+        private bool CheckInputs()
+        {
+            if (!string.IsNullOrWhiteSpace(ModelTextBox.Text)
+                && !string.IsNullOrWhiteSpace(SerialNumberTextBox.Text)
+                && TypeComboBox.SelectedIndex != -1
+                && ManufacturerComboBox.SelectedIndex != -1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

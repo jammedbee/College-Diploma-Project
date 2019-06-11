@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using ServiceCentreClientApp.Entities;
+﻿using ServiceCentreClientApp.Entities;
 using ServiceCentreClientApp.Parameters;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System;
+using System.Data.SqlClient;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace ServiceCentreClientApp.Pages
@@ -27,6 +17,15 @@ namespace ServiceCentreClientApp.Pages
         public DeviceTypePage()
         {
             this.InitializeComponent();
+
+            TypeNameTextBox.Loaded += (object sender, RoutedEventArgs e) =>
+            {
+                SaveButton.IsEnabled = !string.IsNullOrWhiteSpace((sender as TextBox).Text);
+            };
+            TypeNameTextBox.TextChanging += (TextBox sender, TextBoxTextChangingEventArgs args) =>
+            {
+                SaveButton.IsEnabled = !string.IsNullOrWhiteSpace(sender.Text);
+            };
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)

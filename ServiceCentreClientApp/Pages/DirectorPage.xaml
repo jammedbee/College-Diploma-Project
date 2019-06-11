@@ -21,6 +21,7 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <TextBlock Text="Этот сервис" FontSize="36" Margin="5"/>
         <Button Grid.Column="0" Grid.Row="0" Content="Заявки" Name="RequestsViewButton" Click="RequestsViewButton_Click"/>
         <Button Grid.Column="1" Grid.Row="0" Content="Персонал" Name="PersonnelViewButton" Click="PersonnelViewButton_Click"/>
     </Grid>

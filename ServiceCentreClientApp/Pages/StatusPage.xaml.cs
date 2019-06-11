@@ -15,6 +15,15 @@ namespace ServiceCentreClientApp.Parameters
         public StatusPage()
         {
             this.InitializeComponent();
+
+            NameTextBox.Loaded += (object sender, RoutedEventArgs e) =>
+            {
+                SaveButton.IsEnabled = !string.IsNullOrWhiteSpace((sender as TextBox).Text);
+            };
+            NameTextBox.TextChanging += (TextBox sender, TextBoxTextChangingEventArgs args) =>
+            {
+                SaveButton.IsEnabled = !string.IsNullOrWhiteSpace(sender.Text);
+            };
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
