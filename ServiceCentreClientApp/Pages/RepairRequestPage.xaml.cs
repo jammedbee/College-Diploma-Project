@@ -34,6 +34,22 @@ namespace ServiceCentreClientApp.Pages
             clients = new ObservableCollection<User>();
             engineers = new ObservableCollection<User>();
             statuses = new ObservableCollection<RequestStatus>();
+
+            DeviceComboBox.SelectionChanged += ComboBox_SelectionChanged;
+            ClientComboBox.SelectionChanged += ComboBox_SelectionChanged;
+            StatusComboBox.SelectionChanged += ComboBox_SelectionChanged;
+            EngineerComboBox.SelectionChanged += ComboBox_SelectionChanged;
+            PriceTextBox.TextChanging += PriceTextBox_TextChanging;
+        }
+
+        private void PriceTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+            AddButton.IsEnabled = CheckInputs();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AddButton.IsEnabled = CheckInputs();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -46,6 +62,7 @@ namespace ServiceCentreClientApp.Pages
             {
                 ExportFinalRequestToWordButton.IsEnabled = false;
                 ExportRequestToWordButton.IsEnabled = false;
+                AddButton.IsEnabled = false;
             }
             currentUser = (e.Parameter as RepairRequestParameter).CurrentUser;
 
@@ -205,44 +222,6 @@ namespace ServiceCentreClientApp.Pages
             connection.Close();
 
             return retrievedDevices;
-        }
-
-        private async Task GetDataByNavigationReasonAsync(RequestAction action)
-        {
-            switch (action)
-            {
-                // to create new request
-                case RequestAction.CreateNew:
-                    engineers = await GetUsersByTypeAsync(4);
-                    clients = await GetUsersByTypeAsync(7);
-                    managers = await GetUsersByTypeAsync(3);
-                    devices = await GetDevicesAsync();
-                    statuses = await GetRequestStatusesAsync();
-                    break;
-                // to edit existing request
-                case RequestAction.ModifyExisting:
-                    if (currentUser.TypeId == 3)
-                    {
-                        engineers = await GetUsersByTypeAsync(3);
-                        clients = await GetUsersByTypeAsync(7);
-                        statuses = await GetRequestStatusesAsync();
-                    }
-                    else
-                        if (currentUser.TypeId == 4)
-                    {
-                        statuses = await GetRequestStatusesAsync();
-                    }
-                    else
-                            if (currentUser.TypeId == 6)
-                    {
-                        engineers = await GetUsersByTypeAsync(4);
-                        clients = await GetUsersByTypeAsync(7);
-                        managers = await GetUsersByTypeAsync(3);
-                        statuses = await GetRequestStatusesAsync();
-                    }
-                    break;
-            }
-            return;
         }
 
         private async void AddButton_Click(object sender, RoutedEventArgs e)
@@ -490,6 +469,34 @@ namespace ServiceCentreClientApp.Pages
         private enum RequestAction : int
         {
             CreateNew = 0, ModifyExisting = 1
+        }
+
+        private bool CheckInputs()
+        {
+            if (EngineerComboBox.SelectedIndex != -1 && ClientComboBox.SelectedIndex != -1 
+                && DeviceComboBox.SelectedIndex != -1 && StatusComboBox.SelectedIndex != -1
+                && CheckPrice())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool CheckPrice()
+        {
+            double a;
+            bool success = double.TryParse(PriceTextBox.Text, out a);
+            if (success && a > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

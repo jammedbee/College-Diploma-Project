@@ -75,7 +75,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Name="StatusComboBox" ItemsSource="{x:Bind statuses}" Header="Текущий статус" Width="450" Margin="5">
+                <ComboBox Name="StatusComboBox" ItemsSource="{x:Bind statuses}" FontSize="18" Header="Текущий статус" Width="450" Margin="5">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="entities:RequestStatus">
                             <StackPanel Orientation="Horizontal">

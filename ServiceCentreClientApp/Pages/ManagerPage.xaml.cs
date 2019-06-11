@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ServiceCentreClientApp.Entities;
+using ServiceCentreClientApp.Parameters;
+using System;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using ServiceCentreClientApp.Entities;
-using ServiceCentreClientApp.Parameters;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace ServiceCentreClientApp.Pages
