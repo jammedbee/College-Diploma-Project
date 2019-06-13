@@ -55,7 +55,8 @@ namespace ServiceCentreClientApp.Pages
                             .Direction = System.Data.ParameterDirection.Output;
 
                         await command.ExecuteNonQueryAsync();
-
+                        // если авторизация прошла успешно, то загружаем данные текущего пользователя
+                        // с помощью процедуры usp_GetUser
                         if (Convert.ToInt32(command.Parameters["@success"].Value) == 1)
                         {
                             user.AccountId = Convert.ToInt32(command.Parameters["@accountId"].Value);

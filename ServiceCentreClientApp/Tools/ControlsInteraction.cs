@@ -22,7 +22,10 @@ namespace ServiceCentreClientApp.Tools
                 FindChildren<T>(results, current);
             }
         }
-
+        /// <summary>
+        /// Отключает все элеметны управления на переданном объекте.
+        /// </summary>
+        /// <param name="dependencyObject"></param>
         public static void DisableControls(DependencyObject dependencyObject)
         {
             var controls = new List<Control>();
@@ -33,7 +36,10 @@ namespace ServiceCentreClientApp.Tools
                 control.IsEnabled = false;
             }
         }
-
+        /// <summary>
+        /// Включает все элеметны управления на переданном объекте.
+        /// </summary>
+        /// <param name="dependencyObject"></param>
         public static void EnableControls(DependencyObject dependencyObject)
         {
             var controls = new List<Control>();

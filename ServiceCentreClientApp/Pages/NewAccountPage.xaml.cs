@@ -32,12 +32,14 @@ namespace ServiceCentreClientApp.Pages
             }
             else
             {
-                using (SqlCommand command = new SqlCommand($"SELECT COUNT(*) FROM Account WHERE (Account.Login LIKE '{Login.Text}')", connection))
+                using (SqlCommand command = 
+                new SqlCommand($"SELECT COUNT(*) FROM Account WHERE (Account.Login LIKE '{Login.Text}')", connection))
                 {
                     if (connection.State == System.Data.ConnectionState.Closed)
                         await connection.OpenAsync();
+                    // проверка на наличие введённого логина в базе данных 
                     int result = (int)await command.ExecuteScalarAsync();
-                    if (result != 0)
+                    if (result != 0) // если такой логин уже существует, вывести сообщение об этом
                     {
                         Continue.IsEnabled = false;
                         LoginExistsFlyout.ShowAt(Login);
@@ -72,7 +74,10 @@ namespace ServiceCentreClientApp.Pages
             {
                 Id = 0,
                 Login = Login.Text,
-                Password = Encoding.Unicode.GetString(new SHA512Managed().ComputeHash(Encoding.Unicode.GetBytes(Password.Password)))
+                // шифровка пароля с помощью алгоритма SHA-512 
+                Password = Encoding.Unicode.GetString(
+                    new SHA512Managed()
+                    .ComputeHash(Encoding.Unicode.GetBytes(Password.Password)))
             }));
         }
 

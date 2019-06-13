@@ -46,7 +46,13 @@ namespace ServiceCentreClientApp.Pages
                         {
                             while (await reader.ReadAsync())
                             {
-                                retrievedStatuses.Add(new RequestStatus { Id = reader.GetInt32(0), Name = reader.GetString(1) });
+                                retrievedStatuses
+                                .Add(
+                                    new RequestStatus 
+                                    { 
+                                        Id = reader.GetInt32(0), 
+                                        Name = reader.GetString(1) 
+                                    });
                             }
                         }
                     }
@@ -177,7 +183,8 @@ namespace ServiceCentreClientApp.Pages
         {
             if ((FilterComboBox.SelectedItem as RequestStatus).Id != 0)
             {
-                var filteredRequest = requests.Where(r => r.StatusId == (FilterComboBox.SelectedItem as RequestStatus).Id);
+                var filteredRequest = requests
+                    .Where(r => r.StatusId == (FilterComboBox.SelectedItem as RequestStatus).Id);
                 RequestsGridView.ItemsSource = filteredRequest;
             }
         }
@@ -186,7 +193,8 @@ namespace ServiceCentreClientApp.Pages
         {
             var regex = new Regex(args.QueryText);
 
-            var searched = requests.Where(r => regex.IsMatch(r.Id.ToString()) || regex.IsMatch(r.RegistrationDate.ToString()));
+            var searched = requests
+            .Where(r => regex.IsMatch(r.Id.ToString()) || regex.IsMatch(r.RegistrationDate.ToString()));
 
             RequestsGridView.ItemsSource = searched;
         }

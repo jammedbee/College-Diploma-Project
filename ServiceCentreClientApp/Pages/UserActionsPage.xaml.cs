@@ -69,9 +69,9 @@ namespace ServiceCentreClientApp.Pages
                 account = (e.Parameter as UserParameter).CurrentAccount;
                 await GetUserTypesAsync();
 
-                if (user != null)
+                if (user != null) // если страница загрузилась для отображения пользователя
                 {
-                    LoadUser(user);
+                    LoadUser(user); // загрузка всей информации  пользователе
 
                     TypeComboBox.ItemsSource = types;
                     TypeComboBox.SelectedItem = types.FirstOrDefault(t => t.Id == user.TypeId);
@@ -148,21 +148,31 @@ namespace ServiceCentreClientApp.Pages
         {
             try
             {
-                Windows.Storage.Pickers.FileOpenPicker fileOpenPicker = new Windows.Storage.Pickers.FileOpenPicker();
-                fileOpenPicker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-                fileOpenPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+                Windows.Storage.Pickers.FileOpenPicker fileOpenPicker = 
+                    new Windows.Storage.Pickers.FileOpenPicker();
+                fileOpenPicker.ViewMode = 
+                    Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+                fileOpenPicker.SuggestedStartLocation = 
+                    Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
                 fileOpenPicker.FileTypeFilter.Add(".jpg");
                 fileOpenPicker.FileTypeFilter.Add(".jpeg");
                 fileOpenPicker.FileTypeFilter.Add(".png");
 
-                Windows.Storage.StorageFile selectedFile = await fileOpenPicker.PickSingleFileAsync();
+                Windows.Storage.StorageFile selectedFile = 
+                    await fileOpenPicker.PickSingleFileAsync();
+                // если была выбрана фотография
                 if (selectedFile != null)
                 {
                     BitmapImage image = new BitmapImage();
+                    
                     await image.SetSourceAsync(await selectedFile.OpenAsync(Windows.Storage.FileAccessMode.Read));
                     WriteableBitmap writeableBitmap = new WriteableBitmap(image.PixelWidth, image.PixelHeight);
                     await writeableBitmap.SetSourceAsync(await selectedFile.OpenAsync(Windows.Storage.FileAccessMode.Read));
-                    ByteImage = await ImageConverter.ConvertRandomAccessStreamToByteArray(await selectedFile.OpenAsync(Windows.Storage.FileAccessMode.Read));
+                    // конвертация фото в набор байтов
+                    ByteImage = 
+                        await ImageConverter.ConvertRandomAccessStreamToByteArrayAsync(
+                            await selectedFile.OpenAsync(Windows.Storage.FileAccessMode.Read));
+                    // загрузка фото в компонент Image
                     PhotoImage.ImageSource = writeableBitmap;
                 }
             }
@@ -272,8 +282,9 @@ namespace ServiceCentreClientApp.Pages
                         var imageParameter = new SqlParameter("@photo", System.Data.SqlDbType.VarBinary);
 
                         imageParameter.Direction = System.Data.ParameterDirection.Input;
-                        if (ByteImage != null)
+                        if (ByteImage != null) // если фотография была выбрана, загружаем её в базу данных
                         {
+                            // передача фото как массива байтов в запрос при помощи параметра
                             imageParameter.Size = ByteImage.Length;
                             imageParameter.Value = ByteImage;
                             command.CommandText += $"@photo WHERE [User].[Id] = {editedUser.Id}";
@@ -308,7 +319,8 @@ namespace ServiceCentreClientApp.Pages
                     {
                         command.CommandText = $"usp_NewAccount";
                         command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.Parameters.Add(new SqlParameter("@accountId", System.Data.SqlDbType.Int)).Direction = System.Data.ParameterDirection.Output;
+                        command.Parameters.Add(new SqlParameter("@accountId", System.Data.SqlDbType.Int))
+                            .Direction = System.Data.ParameterDirection.Output;
                         command.Parameters.Add(new SqlParameter("@login", account.Login));
                         command.Parameters.Add(new SqlParameter("@password", account.Password));
                         await command.ExecuteNonQueryAsync();
@@ -322,8 +334,9 @@ namespace ServiceCentreClientApp.Pages
 
                         var imageParameter = new SqlParameter("@photo", System.Data.SqlDbType.VarBinary);
                         imageParameter.Direction = System.Data.ParameterDirection.Input;
-                        if (ByteImage != null)
+                        if (ByteImage != null)// если фотография была выбрана, загружаем её в базу данных
                         {
+                            // передача фото как массива байтов в запрос при помощи параметра
                             imageParameter.Size = ByteImage.Length;
                             imageParameter.Value = ByteImage;
                             command.CommandText += $"@photo, {newUser.TypeId}, {account.Id}, 0)";
@@ -331,6 +344,7 @@ namespace ServiceCentreClientApp.Pages
                         }
                         else
                         {
+                            // иначе отправляем значение null
                             command.CommandText += $"null, {newUser.TypeId}, {account.Id}, 0)";
                         }
 

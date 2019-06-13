@@ -54,6 +54,7 @@ namespace ServiceCentreClientApp.Pages
             {
                 connection = (e.Parameter as DeviceParameter).Connection;
                 device = (e.Parameter as DeviceParameter).Device;
+                
                 await GetDeviceTypesAsync();
                 await GetManufacturersAsync();
 
@@ -83,14 +84,14 @@ namespace ServiceCentreClientApp.Pages
                     await connection.OpenAsync();
 
                 using (var command = connection.CreateCommand())
-                {
+                {// если нет загруженной заявки, значит идёт процесс создания новой
                     if (device == null)
                     {
                         command.CommandText = $"INSERT INTO [Device] VALUES ({(TypeComboBox.SelectedItem as DeviceType).Id}," +
                             $"N'{ModelTextBox.Text}',N'{SerialNumberTextBox.Text}', {(ManufacturerComboBox.SelectedItem as Manufacturer).Id}," +
                             $"N'{DescriptionRichTextBox.PlaceholderText}',{Convert.ToByte(WarrantyCheckBox.IsChecked)})";
                     }
-                    else
+                    else // иначе дёт редактирование существующей
                     {
                         command.CommandText = $"UPDATE [Device] SET TypeId={(TypeComboBox.SelectedItem as DeviceType).Id}," +
                             $"Model=N'{ModelTextBox.Text}',SerialNumber='{SerialNumberTextBox.Text}'," +

@@ -121,11 +121,11 @@ namespace ServiceCentreClientApp.Pages
 
         private async Task LoadDataAsync()
         {
-            devices = await GetDevicesAsync();
             statuses = await GetRequestStatusesAsync();
             managers = await GetUsersByTypeAsync(3);
             engineers = await GetUsersByTypeAsync(4);
             clients = await GetUsersByTypeAsync(7);
+            devices = await GetDevicesAsync();
 
             StatusComboBox.ItemsSource = statuses;
             ManagerComboBox.ItemsSource = managers;
