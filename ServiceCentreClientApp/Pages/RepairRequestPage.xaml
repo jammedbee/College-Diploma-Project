@@ -26,7 +26,7 @@
                 <TextBlock Text="Номер заявки" Width="500" FontSize="18" Margin="5"/>
                 <TextBlock Name="IdTextBlock" Width="500" FontSize="18" Margin="5"/>
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <ComboBox Name="ClientComboBox" ItemsSource="{x:Bind clients}" FontSize="18" Header="Клиент" Width="450">
+                    <ComboBox Name="ClientComboBox" ItemsSource="{x:Bind clients}" FontSize="18" Header="Клиент" Width="445">
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="entities:User">
                                 <StackPanel Orientation="Horizontal">
@@ -37,10 +37,10 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button Name="NewClient" Content="+" VerticalAlignment="Bottom" Height="36" Width="36" Click="NewClient_Click"/>
+                    <Button Name="NewClient" Content="+" VerticalAlignment="Bottom" Height="36" Width="36" Click="NewClient_Click" Margin="5,0,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <ComboBox Name="DeviceComboBox" ItemsSource="{x:Bind devices}" FontSize="18" Header="Устройтсво" Width="450">
+                    <ComboBox Name="DeviceComboBox" ItemsSource="{x:Bind devices}" FontSize="18" Header="Устройтсво" Width="405">
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="entities:Device">
                                 <StackPanel Orientation="Horizontal">
@@ -51,20 +51,25 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button Name="NewDevice" Content="+" VerticalAlignment="Bottom" Height="36" Width="36" Click="NewDevice_Click"/>
+                    <Button Name="NewDevice" Content="+" VerticalAlignment="Bottom" Height="36" Width="36" Click="NewDevice_Click" Margin="5,0,0,0"/>
+                    <Button Name="RefreshDevices" VerticalAlignment="Bottom" Height="36" Width="36" Click="RefreshDevices_Click" Margin="5,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE777;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock Text="Дата оформления" FontSize="18" Margin="5"/>
                 <TextBlock Name="RegistrationDate" Text="{x:Bind request.RegistrationDate}" FontSize="18" Margin="5"/>
                 <TextBlock Text="Дата последнего обновления" FontSize="18" Margin="5"/>
                 <TextBlock Name="UpdateDate" Text="{x:Bind request.UpdateDate}" FontSize="18" Margin="5"/>
-                <ComboBox Name="ManagerComboBox" ItemsSource="{x:Bind managers}" Header="Ответственный менеджер" FontSize="18" Margin="5" Width="450">
+                <ComboBox Name="ManagerComboBox" ItemsSource="{x:Bind managers}" Header="Ответственный менеджер" FontSize="18" Margin="5" Width="485">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="entities:User">
                             <TextBlock Text="{x:Bind GetFullName}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Name="EngineerComboBox" ItemsSource="{x:Bind engineers}" FontSize="18" Margin="5" Header="Ответственный инженер" Width="450">
+                <ComboBox Name="EngineerComboBox" ItemsSource="{x:Bind engineers}" FontSize="18" Margin="5" Header="Ответственный инженер" Width="485">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="entities:User">
                             <StackPanel Orientation="Horizontal">
@@ -75,7 +80,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Name="StatusComboBox" ItemsSource="{x:Bind statuses}" FontSize="18" Header="Текущий статус" Width="450" Margin="5">
+                <ComboBox Name="StatusComboBox" ItemsSource="{x:Bind statuses}" FontSize="18" Header="Текущий статус" Width="485" Margin="5">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="entities:RequestStatus">
                             <StackPanel Orientation="Horizontal">
@@ -86,7 +91,7 @@
                 </ComboBox>
                 <CheckBox Name="WarrantyCheckBox" FontSize="18" Margin="5" Content="Гарантия"/>
                 <TextBlock Text="Стоимость" FontSize="18" Margin="5"/>
-                <TextBox Name="PriceTextBox" HorizontalAlignment="Left" FontSize="18" Width="500"/>
+                <TextBox Name="PriceTextBox" HorizontalAlignment="Left" FontSize="18" Width="485" Margin="5,0,5,0"/>
             </StackPanel>
             <Grid Margin="2,20,2,5" HorizontalAlignment="Center" Width="500">
                 <Button Name="AddButton" Click="AddButton_Click" Width="245">

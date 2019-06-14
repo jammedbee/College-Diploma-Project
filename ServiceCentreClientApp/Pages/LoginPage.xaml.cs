@@ -6,6 +6,8 @@ using ServiceCentreClientApp.Entities;
 using ServiceCentreClientApp.Tools;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace ServiceCentreClientApp.Pages
 {
@@ -40,13 +42,17 @@ namespace ServiceCentreClientApp.Pages
                 {
                     using (var command = new SqlCommand())
                     {
+                        string password = Encoding.Unicode.GetString(
+                            new SHA512Managed().ComputeHash(
+                                Encoding.Unicode.GetBytes(passwordPasswordBox.Password)));
+                        // авторизация с помощью процедуры usp_Autorization
                         command.Connection = connection;
                         command.CommandText = "usp_Autorization";
                         command.CommandType = System.Data.CommandType.StoredProcedure;
                         command.Parameters.Add(
                             new SqlParameter("@login", loginTextBox.Text));
                         command.Parameters.Add(
-                            new SqlParameter("@password", passwordPasswordBox.Password));
+                            new SqlParameter("@password", password));
                         command.Parameters.Add(
                             new SqlParameter("@accountId", -1))
                             .Direction = System.Data.ParameterDirection.Output;

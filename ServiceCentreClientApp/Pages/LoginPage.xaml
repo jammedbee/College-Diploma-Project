@@ -11,8 +11,8 @@
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="720" MaxHeight="1080" MinWidth="1280" MaxWidth="1080">
         <ProgressRing x:Name="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="150"/>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="600">
-            <TextBox Name="loginTextBox" Header="Логин" FontSize="24" Margin="0,0,0,5" Text="jammedbee"/>
-            <PasswordBox Name="passwordPasswordBox" Header="Пароль" FontSize="24" Margin="0,5,0,0" Password="jmmdbee"/>
+            <TextBox Name="loginTextBox" Header="Логин" FontSize="24" Margin="0,0,0,5" Text=""/>
+            <PasswordBox Name="passwordPasswordBox" Header="Пароль" FontSize="24" Margin="0,5,0,0" Password=""/>
             <StackPanel Orientation="Horizontal" Margin="0,100,0,0">
                 <Button Name="logInButton" Content="Войти" FontSize="24" Width="295" Margin="0,0,0,0" Click="LogInButton_ClickAsync"/>
                 <Button Name="cancelButton" Content="Отмена" FontSize="24" Width="295" Margin="10,0,0,0" Click="CancelButton_Click"/>

@@ -86,9 +86,12 @@ namespace ServiceCentreClientApp.Pages
                     ByteImage = await GetUserPhoto(user);
                     if (user.Photo != null)
                     {
-                        BitmapImage bitmapImage = await ImageConverter.ByteArrayToBitmapImageAsync(ByteImage);
-                        if (bitmapImage != null)
-                            PhotoImage.ImageSource = bitmapImage;
+                        if (ByteImage != null)
+                        {
+                            BitmapImage bitmapImage = await ImageConverter.ByteArrayToBitmapImageAsync(ByteImage);
+                            if (bitmapImage != null)
+                                PhotoImage.ImageSource = bitmapImage;
+                        }
                     }
                 }
                 else

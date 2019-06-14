@@ -485,6 +485,11 @@ namespace ServiceCentreClientApp.Pages
             }
         }
 
+        private async void RefreshDevices_Click(object sender, RoutedEventArgs e)
+        {
+            await RefreshDevicesAsync();
+        }
+
         private bool CheckPrice()
         {
             double a;
@@ -497,6 +502,15 @@ namespace ServiceCentreClientApp.Pages
             {
                 return false;
             }
+        }
+
+        private async Task RefreshDevicesAsync()
+        {
+            if (devices.Count > 0)
+                devices = new ObservableCollection<Device>();
+
+            devices = await GetDevicesAsync();
+            DeviceComboBox.ItemsSource = devices;
         }
     }
 }
