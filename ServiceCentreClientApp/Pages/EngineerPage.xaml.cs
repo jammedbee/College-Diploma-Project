@@ -72,7 +72,7 @@ namespace ServiceCentreClientApp.Pages
                 }
 
                 var command = connection.CreateCommand();
-                command.CommandText = $"SELECT * FROM RepairRequest WHERE EngineerId = {user.Id}";
+                command.CommandText = $"SELECT * FROM RepairRequest WHERE EngineerId = {user.Id} WHERE StatusId NOT IN (4,5)";
 
                 using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
