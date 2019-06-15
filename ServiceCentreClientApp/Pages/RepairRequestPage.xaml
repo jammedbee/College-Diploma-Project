@@ -7,7 +7,7 @@
     xmlns:entities="using:ServiceCentreClientApp.Entities"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    
     <Grid>
         <StackPanel>
             <Button Name="ExportRequestToWordButton" Click="ExportRequestToWordButton_Click" Width="300" Margin="0,5,5,0" HorizontalAlignment="Right">
@@ -40,13 +40,12 @@
                     <Button Name="NewClient" Content="+" VerticalAlignment="Bottom" Height="36" Width="36" Click="NewClient_Click" Margin="5,0,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <ComboBox Name="DeviceComboBox" ItemsSource="{x:Bind devices}" FontSize="18" Header="Устройтсво" Width="405">
+                    <ComboBox Name="DeviceComboBox" ItemsSource="{x:Bind devices}" FontSize="18" 
+                              Header="Устройтсво" Width="405">
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="entities:Device">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock>
-                                <Run Text="{x:Bind GetDetailedInfo()}"/>
-                                    </TextBlock>
+                                    <TextBlock Text="{x:Bind GetDetailedInfo()}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>

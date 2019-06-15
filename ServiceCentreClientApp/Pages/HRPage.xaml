@@ -43,10 +43,21 @@
                                         <ImageBrush ImageSource="{x:Bind Photo}"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <TextBlock Text="{x:Bind GetFullName}" FontSize="18"/>
-                                <TextBlock Text="{x:Bind GetBirthDate}" FontSize="18"/>
-                                <TextBlock Text="{x:Bind Email}" FontSize="16"/>
-                                <TextBlock Text="{x:Bind PhoneNumber}" FontSize="16"/>
+                                <TextBlock FontSize="16">
+                                    <Run Text="{x:Bind GetFullName}"/>
+                                </TextBlock>
+                                <TextBlock  FontSize="14">
+                                    <Run Text="Дата рождения: "/>
+                                    <Run Text="{x:Bind GetBirthDate}"/>
+                                </TextBlock>
+                                <TextBlock  FontSize="14">
+                                    <Run Text="Эл. адрес: "/>
+                                    <Run Text="{x:Bind Email}"/>
+                                </TextBlock>
+                                <TextBlock  FontSize="14">
+                                    <Run Text="Телефон: "/>
+                                    <Run Text="{x:Bind PhoneNumber}"/>
+                                </TextBlock>
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>

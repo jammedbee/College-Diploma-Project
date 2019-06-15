@@ -79,7 +79,7 @@ namespace ServiceCentreClientApp.Pages
             connection = (e.Parameter as RepairRequestParameter).Connection;
 
             await LoadDataAsync();
-
+            await RefreshDevicesAsync();
             if (request == null)
             {
                 PriceTextBox.Text = "0";
