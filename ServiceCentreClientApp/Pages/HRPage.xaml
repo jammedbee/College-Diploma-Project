@@ -36,14 +36,14 @@
             <GridView Name="UsersGridView" ItemsSource="{x:Bind users}" IsEnabled="True" IsItemClickEnabled="True" ItemClick="UsersGridView_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate x:Name="RequestTemplate" x:DataType="data:User">
-                        <StackPanel>
+                        <StackPanel Height="330">
                             <StackPanel Margin="5">
                                 <Ellipse Width="200" Height="200">
                                     <Ellipse.Fill>
                                         <ImageBrush ImageSource="{x:Bind Photo}"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <TextBlock FontSize="16">
+                                <TextBlock FontSize="16" TextWrapping="WrapWholeWords">
                                     <Run Text="{x:Bind GetFullName}"/>
                                 </TextBlock>
                                 <TextBlock  FontSize="14">
