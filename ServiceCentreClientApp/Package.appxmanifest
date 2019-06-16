@@ -9,7 +9,7 @@
   <Identity
     Name="f870b194-a288-433b-b659-3c8091f386f9"
     Publisher="CN=jamme, O=JammedBee, C=US"
-    Version="1.0.3.0" />
+    Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="f870b194-a288-433b-b659-3c8091f386f9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
