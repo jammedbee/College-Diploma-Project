@@ -25,9 +25,18 @@
                 <GridView.ItemTemplate>
                     <DataTemplate x:Name="RequestTemplate" x:DataType="data:RepairRequest">
                         <StackPanel>
-                            <TextBlock Text="{x:Bind Id}" FontSize="16"/>
-                            <TextBlock Text="{x:Bind RegistrationDate}"/>
-                            <TextBlock Text="{x:Bind DeviceId}"/>
+                            <TextBlock FontSize="16" FontWeight="Bold">
+                                <Run Text="Номер: "/>
+                                <Run Text="{x:Bind Id}"/>
+                            </TextBlock>
+                            <TextBlock>
+                                <Run Text="Зарегистировано: "/>
+                                <Run Text="{x:Bind RegistrationDate.ToShortDateString()}"/>
+                            </TextBlock>
+                            <TextBlock>
+                                <Run Text="Id устройства: "/>
+                                <Run Text="{x:Bind DeviceId}"/>
+                            </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>
